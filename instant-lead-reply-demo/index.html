@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Roofing demo2 | Instant lead reply demo</title>
+<title>Instant lead reply demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
@@ -75,8 +75,14 @@
   button:disabled { background: #A9A9A9; cursor: wait; }
   button.ghost { background: transparent; color: var(--ink); border: 2px solid var(--ink); font-size: 18px; min-height: 44px; }
   button.ghost:hover { background: var(--ink); color: var(--paper); }
+  .help { font-weight: 400; font-size: 15px; color: var(--muted); }
+  .notice { background: var(--paper); border-left: 5px solid var(--red); border-radius: 4px; padding: 14px 18px; margin: 0 0 22px; }
+  .notice p { margin: 6px 0 0; font-size: 16px; color: var(--muted); }
+  .tools { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+  .tools .hint { font-size: 15px; color: var(--muted); }
   .status { min-height: 1.5em; margin: 0; font-weight: 600; }
   .status.err { color: var(--err); }
+  .status.ok { background: var(--paper); border-left: 5px solid var(--red); border-radius: 4px; padding: 12px 16px; }
 
   .proof { background: var(--panel); color: #F2F2F2; border-radius: 6px; padding: 28px; position: sticky; top: 24px; }
   .proof h2 { font-size: 26px; margin-bottom: 4px; }
@@ -117,17 +123,28 @@
   <div class="wrap bar">
     <div class="brand display">
       <svg viewBox="0 0 38 30" aria-hidden="true"><path d="M2 28 L19 4 L36 28" fill="none" stroke="#111111" stroke-width="4" stroke-linejoin="miter"/><path d="M11 28 L19 16 L27 28" fill="#C8102E"/></svg>
-      Roofing Demo
+      <span id="brand-name">Demo Business</span>
     </div>
-    <span class="tag">Demo site, not a real business..</span>
+    <span class="tag">Demo site, not a real business</span>
   </div>
 </header>
 
 <div class="wrap">
 <main>
   <section class="request">
-    <h1>Roof damaged? Get a free inspection.</h1>
-    <p>Tell us what's going on. You'll get a reply with a link to pick your inspection time.</p>
+    <h1 id="headline"></h1>
+    <p id="intro"></p>
+
+    <div class="notice" role="note">
+      <strong>This is a live demo. Test it with your own details.</strong>
+      <p>Enter your real name, phone and email, then send. Within seconds you'll get an email with a link to book a time, and the business owner gets your details as a message on their phone. Use an email you can check.</p>
+      <p>Your details go to the person who built this demo and are used only to show how it works.</p>
+    </div>
+
+    <div class="tools">
+      <button type="button" class="ghost" id="fill">Fill sample details</button>
+      <span class="hint">Fills everything except your email, so the reply goes to you.</span>
+    </div>
 
     <form id="lead-form" novalidate>
       <div class="row">
@@ -138,21 +155,17 @@
           <input name="phone" type="tel" autocomplete="tel" required placeholder="(555) 010-0199">
         </label>
       </div>
-      <label>Email
-        <input name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+      <label>Your email
+        <input name="email" type="email" autocomplete="email" required placeholder="you@example.com" aria-describedby="email-help">
+        <span class="help" id="email-help">Use your own email. The reply with your booking link is sent here, so you can check it right after you send.</span>
       </label>
       <label>What do you need?
-        <select name="service" required>
-          <option value="Storm damage">Storm damage</option>
-          <option value="Roof leak repair">Roof leak repair</option>
-          <option value="Full roof replacement">Full roof replacement</option>
-          <option value="Gutters or siding">Gutters or siding</option>
-        </select>
+        <select name="service" required></select>
       </label>
       <label>Details
         <textarea name="message" placeholder="Hail hit us last night and there's a stain on the bedroom ceiling."></textarea>
       </label>
-      <button id="submit" type="submit">Request free inspection</button>
+      <button id="submit" type="submit">Send my request</button>
       <p id="status" class="status" role="status"></p>
     </form>
   </section>
@@ -179,8 +192,8 @@
         <p class="subject" id="mail-subject"></p>
         <p id="mail-hello"></p>
         <p id="mail-line"></p>
-        <p><a class="book" id="mail-book" href="#" target="_blank" rel="noopener">Book your free inspection</a></p>
-        <p>If it's urgent, call us at (555) 010-0142.</p>
+        <p><a class="book" id="mail-book" href="#" target="_blank" rel="noopener">Book your appointment</a></p>
+        <p>If it's urgent, just reply to this email.</p>
       </div>
       <div class="card">
         <h3>On the owner's phone</h3>
@@ -198,13 +211,38 @@
   const CONFIG = {
     // Paste your n8n production webhook URL here to send real messages.
     // Leave empty to run in simulated mode (nothing is sent).
-    webhookUrl: "https://umar8092.app.n8n.cloud/webhook-test/roofing-lead-demo",
-    companyName: "Roofing",
+    webhookUrl: "https://umar8092.app.n8n.cloud/webhook/roofing-lead-demo",
+    // Shown at the top of the page and in the email. Override per business with ?company=Name in the URL.
+    companyName: "Demo Business",
+    headline: "Tell us what you need.",
+    intro: "Send your details and you'll get a reply with a link to pick a time.",
+    // Options in the dropdown. Override with ?services=One,Two,Three in the URL.
+    services: ["Get a quote", "Book an appointment", "Ask a question", "Something else"],
     bookingUrl: "https://cal.com/your-username/roof-inspection"
   };
   // ---------------------------------------------------------------------
 
   const $ = (id) => document.getElementById(id);
+
+  // Per-business overrides from the URL, e.g.
+  // ?company=Anderson%20Roofing&services=Storm%20damage,Roof%20repair,New%20roof
+  const params = new URLSearchParams(location.search);
+  if (params.get("company")) CONFIG.companyName = params.get("company").slice(0, 60);
+  if (params.get("headline")) CONFIG.headline = params.get("headline").slice(0, 90);
+  if (params.get("services")) {
+    const list = params.get("services").split(",").map((x) => x.trim()).filter(Boolean).slice(0, 8);
+    if (list.length) CONFIG.services = list;
+  }
+  $("brand-name").textContent = CONFIG.companyName;
+  $("headline").textContent = CONFIG.headline;
+  $("intro").textContent = CONFIG.intro;
+  document.title = CONFIG.companyName + " | Instant lead reply demo";
+  CONFIG.services.forEach((name) => {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+    $("lead-form").elements.service.appendChild(opt);
+  });
   const form = $("lead-form");
   let startTime = 0, raf = 0;
 
@@ -237,7 +275,7 @@
     $("previews").hidden = true;
     $("empty").hidden = false;
     $("status").textContent = "";
-    $("status").classList.remove("err");
+    $("status").classList.remove("err", "ok");
   }
   function fillPreviews(d) {
     const first = d.name.trim().split(/\s+/)[0] || "there";
@@ -245,11 +283,11 @@
     $("mail-hello").textContent = "Hi " + first + ",";
     $("mail-line").textContent =
       "Thanks for contacting " + CONFIG.companyName + ". We received your request about " +
-      d.service.toLowerCase() + ". Pick a time for your free inspection:";
+      d.service.toLowerCase() + ". Pick a time that works for you:";
     $("mail-book").href = CONFIG.bookingUrl;
     const time = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
     $("owner-msg").textContent =
-      "New roof inspection request\n" +
+      "New lead from the website\n" +
       "Name: " + d.name + "\n" +
       "Phone: " + d.phone + "\n" +
       "Email: " + d.email + "\n" +
@@ -264,7 +302,10 @@
     fillPreviews(d);
     $("previews").hidden = false;
     $("empty").hidden = true;
-    $("status").textContent = "Thanks, check your inbox for a link to book your inspection.";
+    $("status").classList.add("ok");
+    $("status").textContent =
+      "Request sent. Check your email (" + d.email + ") for our reply and your booking link. " +
+      "It should arrive within a few seconds. If you don't see it, check your spam folder.";
   }
 
   form.addEventListener("submit", async (e) => {
@@ -302,6 +343,27 @@
     } finally {
       btn.disabled = false;
     }
+  });
+
+  const SAMPLES = [
+    { name: "Jordan Miller", phone: "(555) 010-0199",
+      message: "Hi, I'd like a quote for some work at my home. Can someone get back to me this week?" },
+    { name: "Priya Shah", phone: "(555) 010-0173",
+      message: "I have a problem that needs looking at soon. What's your earliest availability?" },
+    { name: "Carlos Rivera", phone: "(555) 010-0148",
+      message: "Looking for an estimate on a bigger project. Please let me know what you need from me." }
+  ];
+  let sampleIndex = 0;
+  $("fill").addEventListener("click", () => {
+    const i = sampleIndex++;
+    const s = SAMPLES[i % SAMPLES.length];
+    form.elements.name.value = s.name;
+    form.elements.phone.value = s.phone;
+    form.elements.service.value = CONFIG.services[i % CONFIG.services.length];
+    form.elements.message.value = s.message;
+    resetRun();
+    // Email is left for the visitor to type, so the reply goes to their own inbox.
+    (form.elements.email.value ? $("submit") : form.elements.email).focus();
   });
 
   $("again").addEventListener("click", () => { form.reset(); resetRun(); form.querySelector("input").focus(); });
