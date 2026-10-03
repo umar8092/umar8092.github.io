@@ -9,15 +9,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --chalk: #EEF0EC;
-    --paper: #FAFAF7;
-    --ink: #1D2830;
-    --panel: #24323C;
-    --tarp: #1F6FB2;
-    --tarp-dark: #175A93;
-    --hivis: #F2B705;
-    --line: #BFC7C2;
-    --muted: #55626B;
+    --chalk: #FFFFFF;
+    --paper: #F4F4F4;
+    --ink: #111111;
+    --panel: #1B1B1B;
+    --red: #C8102E;
+    --red-dark: #9B0D24;
+    --red-light: #FF6B73;
+    --line: #C9C9C9;
+    --muted: #5A5A5A;
     --ok: #2E8B57;
     --err: #B3261E;
   }
@@ -37,7 +37,7 @@
   }
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 
-  header { border-bottom: 2px solid var(--ink); }
+  header { border-bottom: 4px solid var(--red); }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 0; }
   .brand { display: flex; align-items: center; gap: 12px; font-size: 28px; line-height: 1; }
   .brand svg { width: 38px; height: 30px; flex: none; }
@@ -61,38 +61,38 @@
   }
   textarea { min-height: 96px; resize: vertical; }
   input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible {
-    outline: 3px solid var(--tarp); outline-offset: 2px;
+    outline: 3px solid var(--red); outline-offset: 2px;
   }
   button {
     font: 700 22px/1 "Barlow Condensed", "Arial Narrow", sans-serif;
     letter-spacing: 0.03em;
-    background: var(--tarp); color: #fff;
+    background: var(--red); color: #fff;
     border: 0; border-radius: 4px;
     min-height: 54px; padding: 0 28px;
     cursor: pointer;
   }
-  button:hover { background: var(--tarp-dark); }
-  button:disabled { background: #7C94A8; cursor: wait; }
+  button:hover { background: var(--red-dark); }
+  button:disabled { background: #A9A9A9; cursor: wait; }
   button.ghost { background: transparent; color: var(--ink); border: 2px solid var(--ink); font-size: 18px; min-height: 44px; }
   button.ghost:hover { background: var(--ink); color: var(--paper); }
   .status { min-height: 1.5em; margin: 0; font-weight: 600; }
   .status.err { color: var(--err); }
 
-  .proof { background: var(--panel); color: #E9EEEA; border-radius: 6px; padding: 28px; position: sticky; top: 24px; }
+  .proof { background: var(--panel); color: #F2F2F2; border-radius: 6px; padding: 28px; position: sticky; top: 24px; }
   .proof h2 { font-size: 26px; margin-bottom: 4px; }
-  .mode { margin: 0 0 20px; font-size: 15px; color: #AEBBB5; }
+  .mode { margin: 0 0 20px; font-size: 15px; color: #B8B8B8; }
   .clockrow { display: flex; align-items: baseline; gap: 14px; }
   .clock { font: 700 clamp(64px, 9vw, 96px)/1 "Barlow Condensed", "Arial Narrow", sans-serif; font-variant-numeric: tabular-nums; }
-  .clocklabel { color: #AEBBB5; font-size: 15px; }
-  .meter { height: 6px; background: #3A4A56; border-radius: 3px; overflow: hidden; margin: 8px 0 22px; }
-  .meter i { display: block; height: 100%; width: 0; background: var(--hivis); transition: width .25s linear; }
+  .clocklabel { color: #B8B8B8; font-size: 15px; }
+  .meter { height: 6px; background: #3A3A3A; border-radius: 3px; overflow: hidden; margin: 8px 0 22px; }
+  .meter i { display: block; height: 100%; width: 0; background: var(--red-light); transition: width .25s linear; }
 
   .steps { list-style: none; margin: 0 0 24px; padding: 0; display: grid; gap: 10px; }
-  .steps li { display: flex; align-items: center; gap: 12px; color: #AEBBB5; }
-  .steps li::before { content: ""; width: 18px; height: 18px; border-radius: 50%; border: 2px solid #5B6C77; flex: none; }
+  .steps li { display: flex; align-items: center; gap: 12px; color: #B8B8B8; }
+  .steps li::before { content: ""; width: 18px; height: 18px; border-radius: 50%; border: 2px solid #6B6B6B; flex: none; }
   .steps li.done { color: #fff; }
-  .steps li.done::before { background: var(--hivis); border-color: var(--hivis); }
-  .steps .t { margin-left: auto; font-variant-numeric: tabular-nums; color: var(--hivis); }
+  .steps li.done::before { background: var(--red-light); border-color: var(--red-light); }
+  .steps .t { margin-left: auto; font-variant-numeric: tabular-nums; color: var(--red-light); }
 
   .previews { display: grid; gap: 16px; }
   .previews[hidden] { display: none; }
@@ -100,9 +100,9 @@
   .card h3 { margin: 0 0 8px; font: 600 14px/1.2 "Source Sans 3", sans-serif; color: var(--muted); }
   .subject { font-weight: 600; margin: 0 0 8px; }
   .card p { margin: 0 0 10px; }
-  .book { display: inline-block; background: var(--tarp); color: #fff; text-decoration: none; font-weight: 600; padding: 9px 16px; border-radius: 4px; }
+  .book { display: inline-block; background: var(--red); color: #fff; text-decoration: none; font-weight: 600; padding: 9px 16px; border-radius: 4px; }
   .owner { white-space: pre-wrap; font-size: 16px; margin: 0; }
-  .note { font-size: 14px; color: #AEBBB5; margin: 16px 0 0; }
+  .note { font-size: 14px; color: #B8B8B8; margin: 16px 0 0; }
 
   @media (max-width: 860px) {
     main { grid-template-columns: 1fr; gap: 32px; padding-top: 32px; }
@@ -116,7 +116,7 @@
 <header>
   <div class="wrap bar">
     <div class="brand display">
-      <svg viewBox="0 0 38 30" aria-hidden="true"><path d="M2 28 L19 4 L36 28" fill="none" stroke="#1D2830" stroke-width="4" stroke-linejoin="miter"/><path d="M11 28 L19 16 L27 28" fill="#F2B705"/></svg>
+      <svg viewBox="0 0 38 30" aria-hidden="true"><path d="M2 28 L19 4 L36 28" fill="none" stroke="#111111" stroke-width="4" stroke-linejoin="miter"/><path d="M11 28 L19 16 L27 28" fill="#C8102E"/></svg>
       Summit Ridge Roofing
     </div>
     <span class="tag">Demo site, not a real business</span>
@@ -210,7 +210,7 @@
 
   $("mode").textContent = CONFIG.webhookUrl
     ? "Live: connected to your automation workflow."
-    : "Simulated(DEMO): nothing is sent.";
+    : "Simulated: nothing is sent. Add your webhook URL in CONFIG to send real messages.";
 
   const fmt = (ms) => (ms / 1000).toFixed(1) + " s";
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
