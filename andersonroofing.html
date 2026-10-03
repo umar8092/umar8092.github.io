@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Summit Ridge Roofing | Instant lead reply demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --chalk: #EEF0EC;
+    --paper: #FAFAF7;
+    --ink: #1D2830;
+    --panel: #24323C;
+    --tarp: #1F6FB2;
+    --tarp-dark: #175A93;
+    --hivis: #F2B705;
+    --line: #BFC7C2;
+    --muted: #55626B;
+    --ok: #2E8B57;
+    --err: #B3261E;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--chalk);
+    color: var(--ink);
+    font: 400 17px/1.55 "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  h1, h2, .display {
+    font-family: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    margin: 0;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  header { border-bottom: 2px solid var(--ink); }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 0; }
+  .brand { display: flex; align-items: center; gap: 12px; font-size: 28px; line-height: 1; }
+  .brand svg { width: 38px; height: 30px; flex: none; }
+  .tag { font-size: 15px; color: var(--muted); border: 1.5px solid var(--line); border-radius: 4px; padding: 3px 10px; background: var(--paper); }
+
+  main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; padding: 48px 0 64px; align-items: start; }
+
+  .request h1 { font-size: clamp(40px, 6vw, 64px); line-height: 0.98; margin-bottom: 16px; }
+  .request > p { max-width: 46ch; margin: 0 0 28px; color: var(--muted); }
+
+  form { display: grid; gap: 18px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  label { display: grid; gap: 6px; font-weight: 600; font-size: 16px; }
+  input, select, textarea {
+    font: inherit; color: var(--ink);
+    background: var(--paper);
+    border: 2px solid var(--line);
+    border-radius: 4px;
+    padding: 11px 12px;
+    width: 100%;
+  }
+  textarea { min-height: 96px; resize: vertical; }
+  input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible {
+    outline: 3px solid var(--tarp); outline-offset: 2px;
+  }
+  button {
+    font: 700 22px/1 "Barlow Condensed", "Arial Narrow", sans-serif;
+    letter-spacing: 0.03em;
+    background: var(--tarp); color: #fff;
+    border: 0; border-radius: 4px;
+    min-height: 54px; padding: 0 28px;
+    cursor: pointer;
+  }
+  button:hover { background: var(--tarp-dark); }
+  button:disabled { background: #7C94A8; cursor: wait; }
+  button.ghost { background: transparent; color: var(--ink); border: 2px solid var(--ink); font-size: 18px; min-height: 44px; }
+  button.ghost:hover { background: var(--ink); color: var(--paper); }
+  .status { min-height: 1.5em; margin: 0; font-weight: 600; }
+  .status.err { color: var(--err); }
+
+  .proof { background: var(--panel); color: #E9EEEA; border-radius: 6px; padding: 28px; position: sticky; top: 24px; }
+  .proof h2 { font-size: 26px; margin-bottom: 4px; }
+  .mode { margin: 0 0 20px; font-size: 15px; color: #AEBBB5; }
+  .clockrow { display: flex; align-items: baseline; gap: 14px; }
+  .clock { font: 700 clamp(64px, 9vw, 96px)/1 "Barlow Condensed", "Arial Narrow", sans-serif; font-variant-numeric: tabular-nums; }
+  .clocklabel { color: #AEBBB5; font-size: 15px; }
+  .meter { height: 6px; background: #3A4A56; border-radius: 3px; overflow: hidden; margin: 8px 0 22px; }
+  .meter i { display: block; height: 100%; width: 0; background: var(--hivis); transition: width .25s linear; }
+
+  .steps { list-style: none; margin: 0 0 24px; padding: 0; display: grid; gap: 10px; }
+  .steps li { display: flex; align-items: center; gap: 12px; color: #AEBBB5; }
+  .steps li::before { content: ""; width: 18px; height: 18px; border-radius: 50%; border: 2px solid #5B6C77; flex: none; }
+  .steps li.done { color: #fff; }
+  .steps li.done::before { background: var(--hivis); border-color: var(--hivis); }
+  .steps .t { margin-left: auto; font-variant-numeric: tabular-nums; color: var(--hivis); }
+
+  .previews { display: grid; gap: 16px; }
+  .previews[hidden] { display: none; }
+  .card { background: var(--paper); color: var(--ink); border-radius: 4px; padding: 16px 18px; }
+  .card h3 { margin: 0 0 8px; font: 600 14px/1.2 "Source Sans 3", sans-serif; color: var(--muted); }
+  .subject { font-weight: 600; margin: 0 0 8px; }
+  .card p { margin: 0 0 10px; }
+  .book { display: inline-block; background: var(--tarp); color: #fff; text-decoration: none; font-weight: 600; padding: 9px 16px; border-radius: 4px; }
+  .owner { white-space: pre-wrap; font-size: 16px; margin: 0; }
+  .note { font-size: 14px; color: #AEBBB5; margin: 16px 0 0; }
+
+  @media (max-width: 860px) {
+    main { grid-template-columns: 1fr; gap: 32px; padding-top: 32px; }
+    .proof { position: static; }
+    .row { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { .meter i { transition: none; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <div class="brand display">
+      <svg viewBox="0 0 38 30" aria-hidden="true"><path d="M2 28 L19 4 L36 28" fill="none" stroke="#1D2830" stroke-width="4" stroke-linejoin="miter"/><path d="M11 28 L19 16 L27 28" fill="#F2B705"/></svg>
+      Summit Ridge Roofing
+    </div>
+    <span class="tag">Demo site, not a real business</span>
+  </div>
+</header>
+
+<div class="wrap">
+<main>
+  <section class="request">
+    <h1>Roof damaged? Get a free inspection.</h1>
+    <p>Tell us what's going on. You'll get a reply with a link to pick your inspection time.</p>
+
+    <form id="lead-form" novalidate>
+      <div class="row">
+        <label>Full name
+          <input name="name" autocomplete="name" required placeholder="Jordan Miller">
+        </label>
+        <label>Phone
+          <input name="phone" type="tel" autocomplete="tel" required placeholder="(555) 010-0199">
+        </label>
+      </div>
+      <label>Email
+        <input name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+      </label>
+      <label>What do you need?
+        <select name="service" required>
+          <option value="Storm damage">Storm damage</option>
+          <option value="Roof leak repair">Roof leak repair</option>
+          <option value="Full roof replacement">Full roof replacement</option>
+          <option value="Gutters or siding">Gutters or siding</option>
+        </select>
+      </label>
+      <label>Details
+        <textarea name="message" placeholder="Hail hit us last night and there's a stain on the bedroom ceiling."></textarea>
+      </label>
+      <button id="submit" type="submit">Request free inspection</button>
+      <p id="status" class="status" role="status"></p>
+    </form>
+  </section>
+
+  <aside class="proof" aria-label="What happens behind the scenes">
+    <h2>Behind the scenes</h2>
+    <p class="mode" id="mode"></p>
+
+    <div class="clockrow">
+      <div class="clock" id="clock">0.0 s</div>
+      <div class="clocklabel">since the form was sent</div>
+    </div>
+    <div class="meter" aria-hidden="true"><i id="meter"></i></div>
+
+    <ul class="steps">
+      <li id="step-received">Lead received <span class="t"></span></li>
+      <li id="step-email">Reply with booking link sent to customer <span class="t"></span></li>
+      <li id="step-owner">Lead details sent to the owner <span class="t"></span></li>
+    </ul>
+
+    <div class="previews" id="previews" hidden>
+      <div class="card">
+        <h3>In the customer's inbox</h3>
+        <p class="subject" id="mail-subject"></p>
+        <p id="mail-hello"></p>
+        <p id="mail-line"></p>
+        <p><a class="book" id="mail-book" href="#" target="_blank" rel="noopener">Book your free inspection</a></p>
+        <p>If it's urgent, call us at (555) 010-0142.</p>
+      </div>
+      <div class="card">
+        <h3>On the owner's phone</h3>
+        <p class="owner" id="owner-msg"></p>
+      </div>
+      <button type="button" class="ghost" id="again">Run another test</button>
+    </div>
+    <p class="note" id="empty">Send the form to start the clock.</p>
+  </aside>
+</main>
+</div>
+
+<script>
+  // ---- Settings -------------------------------------------------------
+  const CONFIG = {
+    // Paste your n8n production webhook URL here to send real messages.
+    // Leave empty to run in simulated mode (nothing is sent).
+    webhookUrl: "",
+    companyName: "Summit Ridge Roofing",
+    bookingUrl: "https://cal.com/your-username/roof-inspection"
+  };
+  // ---------------------------------------------------------------------
+
+  const $ = (id) => document.getElementById(id);
+  const form = $("lead-form");
+  let startTime = 0, raf = 0;
+
+  $("mode").textContent = CONFIG.webhookUrl
+    ? "Live: connected to your automation workflow."
+    : "Simulated: nothing is sent. Add your webhook URL in CONFIG to send real messages.";
+
+  const fmt = (ms) => (ms / 1000).toFixed(1) + " s";
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  function tick() {
+    $("clock").textContent = fmt(performance.now() - startTime);
+    $("meter").style.width = Math.min(100, ((performance.now() - startTime) / 5000) * 100) + "%";
+    raf = requestAnimationFrame(tick);
+  }
+  function markStep(name) {
+    const li = $("step-" + name);
+    li.classList.add("done");
+    li.querySelector(".t").textContent = fmt(performance.now() - startTime);
+  }
+  function resetRun() {
+    cancelAnimationFrame(raf);
+    ["received", "email", "owner"].forEach((n) => {
+      const li = $("step-" + n);
+      li.classList.remove("done");
+      li.querySelector(".t").textContent = "";
+    });
+    $("clock").textContent = "0.0 s";
+    $("meter").style.width = "0";
+    $("previews").hidden = true;
+    $("empty").hidden = false;
+    $("status").textContent = "";
+    $("status").classList.remove("err");
+  }
+  function fillPreviews(d) {
+    const first = d.name.trim().split(/\s+/)[0] || "there";
+    $("mail-subject").textContent = "We got your request, " + first;
+    $("mail-hello").textContent = "Hi " + first + ",";
+    $("mail-line").textContent =
+      "Thanks for contacting " + CONFIG.companyName + ". We received your request about " +
+      d.service.toLowerCase() + ". Pick a time for your free inspection:";
+    $("mail-book").href = CONFIG.bookingUrl;
+    const time = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    $("owner-msg").textContent =
+      "New roof inspection request\n" +
+      "Name: " + d.name + "\n" +
+      "Phone: " + d.phone + "\n" +
+      "Email: " + d.email + "\n" +
+      "Service: " + d.service + "\n" +
+      "Details: " + (d.message || "(none)") + "\n" +
+      "Received: " + time;
+  }
+  function finish(d) {
+    cancelAnimationFrame(raf);
+    $("clock").textContent = fmt(performance.now() - startTime);
+    $("meter").style.width = "100%";
+    fillPreviews(d);
+    $("previews").hidden = false;
+    $("empty").hidden = true;
+    $("status").textContent = "Thanks, check your inbox for a link to book your inspection.";
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    const data = Object.fromEntries(new FormData(form));
+    const btn = $("submit");
+
+    resetRun();
+    btn.disabled = true;
+    startTime = performance.now();
+    raf = requestAnimationFrame(tick);
+
+    try {
+      if (CONFIG.webhookUrl) {
+        // The workflow replies only after the email and the owner alert have both been sent.
+        const res = await fetch(CONFIG.webhookUrl, {
+          method: "POST",
+          body: new URLSearchParams({ ...data, companyName: CONFIG.companyName, bookingUrl: CONFIG.bookingUrl })
+        });
+        if (!res.ok) throw new Error("Workflow returned status " + res.status);
+        markStep("received"); markStep("email"); markStep("owner");
+      } else {
+        await wait(250);  markStep("received");
+        await wait(700);  markStep("email");
+        await wait(500);  markStep("owner");
+      }
+      finish(data);
+    } catch (err) {
+      cancelAnimationFrame(raf);
+      $("status").classList.add("err");
+      $("status").textContent =
+        "Couldn't reach the automation. Check that the workflow is active and the webhook URL in CONFIG is the production URL.";
+      console.error(err);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  $("again").addEventListener("click", () => { form.reset(); resetRun(); form.querySelector("input").focus(); });
+</script>
+</body>
+</html>
