@@ -40,13 +40,13 @@
   header { border-bottom: 4px solid var(--red); }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 0; }
   .brand { display: flex; align-items: center; gap: 12px; font-size: 28px; line-height: 1; }
-  .brand svg { width: 38px; height: 30px; flex: none; }
+  .brand svg { width: 30px; height: 30px; flex: none; }
   .tag { font-size: 15px; color: var(--muted); border: 1.5px solid var(--line); border-radius: 4px; padding: 3px 10px; background: var(--paper); }
 
-  main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; padding: 48px 0 64px; align-items: start; }
+  main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; padding: 32px 0 56px; align-items: start; }
 
-  .request h1 { font-size: clamp(40px, 6vw, 64px); line-height: 0.98; margin-bottom: 16px; }
-  .request > p { max-width: 46ch; margin: 0 0 28px; color: var(--muted); }
+  .request h1 { font-size: clamp(34px, 4.6vw, 52px); line-height: 1; margin-bottom: 10px; }
+  .request > p { max-width: 46ch; margin: 0 0 18px; color: var(--muted); }
 
   form { display: grid; gap: 18px; }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
@@ -76,10 +76,11 @@
   button.ghost { background: transparent; color: var(--ink); border: 2px solid var(--ink); font-size: 18px; min-height: 44px; }
   button.ghost:hover { background: var(--ink); color: var(--paper); }
   .help { font-weight: 400; font-size: 15px; color: var(--muted); }
-  .notice { background: var(--paper); border-left: 5px solid var(--red); border-radius: 4px; padding: 14px 18px; margin: 0 0 22px; }
-  .notice p { margin: 6px 0 0; font-size: 16px; color: var(--muted); }
-  .tools { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
-  .tools .hint { font-size: 15px; color: var(--muted); }
+  .notice { background: var(--paper); border-left: 5px solid var(--red); border-radius: 4px; padding: 12px 16px; margin: 0 0 20px; }
+  .notice p { margin: 0 0 10px; font-size: 15px; line-height: 1.45; color: var(--ink); }
+  button.ghost.small { font-size: 17px; min-height: 36px; padding: 0 16px; }
+  .tools { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 0; }
+  .tools .hint { font-size: 14px; color: var(--muted); }
   .status { min-height: 1.5em; margin: 0; font-weight: 600; }
   .status.err { color: var(--err); }
   .status.ok { background: var(--paper); border-left: 5px solid var(--red); border-radius: 4px; padding: 12px 16px; }
@@ -122,7 +123,7 @@
 <header>
   <div class="wrap bar">
     <div class="brand display">
-      <svg viewBox="0 0 38 30" aria-hidden="true"><path d="M2 28 L19 4 L36 28" fill="none" stroke="#111111" stroke-width="4" stroke-linejoin="miter"/><path d="M11 28 L19 16 L27 28" fill="#C8102E"/></svg>
+      <svg viewBox="0 0 30 30" aria-hidden="true"><path d="M17.5 1.5 5 17h8.2L11.5 28.5 25 12h-8.3z" fill="#C8102E" stroke="#111111" stroke-width="2" stroke-linejoin="round"/></svg>
       <span id="brand-name">Demo Business</span>
     </div>
     <span class="tag">Demo site, not a real business</span>
@@ -136,14 +137,11 @@
     <p id="intro"></p>
 
     <div class="notice" role="note">
-      <strong>This is a live demo. Test it with your own details.</strong>
-      <p>Enter your real name, phone and email, then send. Within seconds you'll get an email with a link to book a time, and the business owner gets your details as a message on their phone. Use an email you can check.</p>
-      <p>Your details go to the person who built this demo and are used only to show how it works.</p>
-    </div>
-
-    <div class="tools">
-      <button type="button" class="ghost" id="fill">Fill sample details</button>
-      <span class="hint">Fills everything except your email, so the reply goes to you.</span>
+      <p><strong>Live demo.</strong> Enter your own name, phone and email. You'll get a reply email within seconds, and the business owner gets your details on their phone. Your details are used only to show how this works.</p>
+      <div class="tools">
+        <button type="button" class="ghost small" id="fill">Fill sample details</button>
+        <span class="hint">Fills everything except your email.</span>
+      </div>
     </div>
 
     <form id="lead-form" novalidate>
@@ -218,14 +216,14 @@
     intro: "Send your details and you'll get a reply with a link to pick a time.",
     // Options in the dropdown. Override with ?services=One,Two,Three in the URL.
     services: ["Get a quote", "Book an appointment", "Ask a question", "Something else"],
-    bookingUrl: "https://cal.com/your-username/roof-inspection"
+    bookingUrl: "https://cal.com/your-username/meeting"
   };
   // ---------------------------------------------------------------------
 
   const $ = (id) => document.getElementById(id);
 
   // Per-business overrides from the URL, e.g.
-  // ?company=Anderson%20Roofing&services=Storm%20damage,Roof%20repair,New%20roof
+  // ?company=Bright%20Smile%20Dental&services=Cleaning,Check-up,Whitening
   const params = new URLSearchParams(location.search);
   if (params.get("company")) CONFIG.companyName = params.get("company").slice(0, 60);
   if (params.get("headline")) CONFIG.headline = params.get("headline").slice(0, 90);
@@ -282,8 +280,7 @@
     $("mail-subject").textContent = "We got your request, " + first;
     $("mail-hello").textContent = "Hi " + first + ",";
     $("mail-line").textContent =
-      "Thanks for contacting " + CONFIG.companyName + ". We received your request about " +
-      d.service.toLowerCase() + ". Pick a time that works for you:";
+      "Thanks for contacting " + CONFIG.companyName + ". We received your request (" + d.service + "). Pick a time that works for you:";
     $("mail-book").href = CONFIG.bookingUrl;
     const time = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
     $("owner-msg").textContent =
