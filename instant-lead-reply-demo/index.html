@@ -163,6 +163,7 @@
       <label>Details
         <textarea name="message" placeholder="Hail hit us last night and there's a stain on the bedroom ceiling."></textarea>
       </label>
+      <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
       <button id="submit" type="submit">Send my request</button>
       <p id="status" class="status" role="status"></p>
     </form>
@@ -199,6 +200,7 @@
       </div>
       <button type="button" class="ghost" id="again">Run another test</button>
     </div>
+    <p class="note">Not shown in this demo: if the customer hasn't booked after an hour, an automatic follow-up goes out, and again the next day.</p>
     <p class="note" id="empty">Send the form to start the clock.</p>
   </aside>
 </main>
@@ -216,7 +218,7 @@
     intro: "Send your details and you'll get a reply with a link to pick a time.",
     // Options in the dropdown. Override with ?services=One,Two,Three in the URL.
     services: ["Get a quote", "Book an appointment", "Ask a question", "Something else"],
-    bookingUrl: "https://cal.com/your-username/meeting"
+    bookingUrl: "https://cal.com/muhammad-umar-8092/15min"
   };
   // ---------------------------------------------------------------------
 
@@ -259,7 +261,6 @@
   function markStep(name) {
     const li = $("step-" + name);
     li.classList.add("done");
-    li.querySelector(".t").textContent = fmt(performance.now() - startTime);
   }
   function resetRun() {
     cancelAnimationFrame(raf);
@@ -311,13 +312,28 @@
     const data = Object.fromEntries(new FormData(form));
     const btn = $("submit");
 
+    // Spam guard: bots fill the hidden field; humans get one send per 30 s.
+    const bot = !!data.website;
+    delete data.website;
+    try {
+      const last = +localStorage.getItem("lastSend") || 0;
+      if (!bot && Date.now() - last < 30000) {
+        $("status").className = "status err";
+        $("status").textContent = "Please wait a few seconds before sending another test.";
+        return;
+      }
+      if (!bot) localStorage.setItem("lastSend", Date.now());
+    } catch (_) {}
+
     resetRun();
     btn.disabled = true;
     startTime = performance.now();
     raf = requestAnimationFrame(tick);
 
     try {
-      if (CONFIG.webhookUrl) {
+      if (bot) {
+        await wait(500); markStep("received"); markStep("email"); markStep("owner");  // pretend success, send nothing
+      } else if (CONFIG.webhookUrl) {
         // The workflow replies only after the email and the owner alert have both been sent.
         const res = await fetch(CONFIG.webhookUrl, {
           method: "POST",
