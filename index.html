@@ -204,6 +204,8 @@ section{padding:clamp(3rem,7vw,5.5rem) 0;border-top:1px solid var(--line)}
 :root[data-theme="dark"] .theme .moon,:root[data-theme="light"] .theme .sun{display:none}
 @media (max-width:600px){.mark{display:none}.top .wrap{gap:.5rem}.top nav{gap:.85rem;font-size:.9rem;margin-left:0;margin-right:auto}}
 @media (max-width:360px){.top nav{gap:.6rem;font-size:.85rem}}
+/* touch screens: enlarge tap areas without moving anything (invisible hit zone around small links) */
+@media (pointer:coarse){.top nav a,.plat-mini a{position:relative}.top nav a::after{content:"";position:absolute;inset:-12px -5px}.plat-mini a::after{content:"";position:absolute;inset:-16px -6px}}
 @media (max-width:340px){.top .wrap{gap:.3rem}.top nav{gap:.45rem;font-size:.8rem}.theme{width:34px;height:34px;margin-left:0}}
 
 /* hero */
