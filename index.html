@@ -213,7 +213,8 @@ dialog::backdrop{background:rgba(8,8,10,.7);backdrop-filter:blur(3px)}
 .flowchart{position:relative}
 .flow-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .flow-lines .fl{fill:none;stroke:var(--link);stroke-opacity:.55;stroke-width:1.8;stroke-linecap:round}
-.flow-lines .fdot{fill:var(--accent);filter:drop-shadow(0 0 3px var(--accent))}
+.flow-lines .fp{stroke:var(--accent);stroke-opacity:1;stroke-width:3.4;stroke-dasharray:2 23;filter:drop-shadow(0 0 3px var(--accent));animation:fFlow 1.8s linear infinite;animation-delay:var(--d,0s)}
+.flow-lines .fp.rev{animation-direction:reverse}
 .stage{position:relative;z-index:1}
 .legend{display:flex;flex-wrap:wrap;gap:1rem;font-size:.8rem;color:var(--muted);margin-top:1rem}
 .legend span{display:inline-flex;align-items:center;gap:.35rem}
@@ -734,10 +735,10 @@ function drawFlows(){
         const d = vert ? `M${x1} ${y1}C${x1} ${m} ${x2} ${m} ${x2} ${y2}` : `M${x1} ${y1}C${m} ${y1} ${m} ${y2} ${x2} ${y2}`;
         out += `<path class="fl" d="${d}"/>`;
         if (!calmMotion) {
-          const rev = links[i]?.dataset.bi === "1", t = (n++ % 3) * 0.4;
-          out += `<circle class="fdot" r="3"><animateMotion dur="2.4s" begin="${t}s" repeatCount="indefinite" path="${d}"/></circle>` +
-                 `<circle class="fdot" r="3"><animateMotion dur="2.4s" begin="${t + 1.2}s" repeatCount="indefinite" path="${d}"/></circle>` +
-                 (rev ? `<circle class="fdot" r="3"><animateMotion dur="2.4s" begin="${t + 0.6}s" repeatCount="indefinite" path="${d}" keyPoints="1;0" keyTimes="0;1" calcMode="linear"/></circle>` : "");
+          // dashes sliding along the line (CSS), not SMIL: iOS Safari does not reliably run animateMotion on these
+          const rev = links[i]?.dataset.bi === "1", t = (n++ % 4) * 0.35;
+          out += `<path class="fl fp" pathLength="100" d="${d}" style="--d:-${t}s"/>` +
+                 (rev ? `<path class="fl fp rev" pathLength="100" d="${d}" style="--d:-${t + 0.8}s"/>` : "");
         }
       });
     });
