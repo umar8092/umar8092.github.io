@@ -112,10 +112,9 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,5.5vw,4rem)
 /* hero flow: apps -> automation platform -> apps */
 .hero-flow{min-width:0}
 .flow-stage svg{display:block;width:100%;height:auto;overflow:visible}
-.flow-grid{display:none;list-style:none;margin:0;padding:0;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem .5rem}
-.flow-grid li{display:grid;justify-items:center;gap:.35rem;font-size:.72rem;color:var(--muted);text-align:center;animation:flowIn .5s both}
-.flow-grid img{width:56px;height:46px;object-fit:contain}
-@media (max-width:639px){.flow-stage{display:none}.flow-grid{display:grid}}
+.flow-stage-m{display:none}
+.flow-stage-m svg{display:block;width:100%;max-width:400px;margin:0 auto;height:auto;overflow:visible}
+@media (max-width:639px){.flow-stage{display:none}.flow-stage-m{display:block}}
 :root:not([data-theme="light"]) .f-inv{filter:invert(1)}
 :root:not([data-theme="light"]) .f-white{filter:brightness(0) invert(1)}
 .flow-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:.35rem;margin-top:.75rem}
@@ -140,7 +139,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,5.5vw,4rem)
 @keyframes fShow{to{opacity:1}}
 @keyframes fBob{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
 @keyframes fPulse{from{opacity:.7;transform:scale(1)}to{opacity:0;transform:scale(1.35,1.9)}}
-@media (prefers-reduced-motion:reduce){.f-line{animation:none;stroke-dashoffset:0}.f-node,.flow-grid li{animation:none}.f-bob,.f-packet,.f-ring{animation:none;display:none}.f-bob{display:inline}}
+@media (prefers-reduced-motion:reduce){.f-line{animation:none;stroke-dashoffset:0}.f-node{animation:none}.f-bob,.f-packet,.f-ring{animation:none;display:none}.f-bob{display:inline}}
 
 /* work */
 #work{background:var(--panel)}
@@ -366,7 +365,7 @@ footer{padding:1.5rem 0;font-size:.85rem;color:var(--muted)}
     </div>
     <div class="hero-flow" id="heroFlow">
       <div class="flow-stage"><svg id="flowSvg" viewBox="0 0 560 350" role="img" aria-label="Apps I connect, grouped by category, flowing through an automation platform such as Zapier, Make or n8n"></svg></div>
-      <ul class="flow-grid" id="flowGrid" aria-hidden="true"></ul>
+      <div class="flow-stage-m"><svg id="flowSvgM" viewBox="0 0 360 360" aria-hidden="true"></svg></div>
       <div class="flow-tabs" id="flowTabs" role="tablist" aria-label="App categories"></div>
     </div>
    </div>
@@ -905,7 +904,7 @@ Cal("inline",{elementOrSelector:"#cal-inline",calLink:"muhammad-umar-8092/15min"
 (() => {
   const root = document.getElementById("heroFlow");
   if (!root) return;
-  const svg = document.getElementById("flowSvg"), grid = document.getElementById("flowGrid"), tabs = document.getElementById("flowTabs");
+  const svg = document.getElementById("flowSvg"), svgM = document.getElementById("flowSvgM"), tabs = document.getElementById("flowTabs");
   // [slug, label, flag]  flag: i = invert on dark theme, w = white silhouette on dark theme (for dark single-colour logos)
   const G = [
     ["CRM", [["hubspot","HubSpot"],["zendesk","Zendesk","w"],["dynamics365","Dynamics 365"],["pipedrive","Pipedrive","w"],["gong","Gong"],["salesforce","Salesforce"]]],
@@ -917,7 +916,7 @@ Cal("inline",{elementOrSelector:"#cal-inline",calLink:"muhammad-umar-8092/15min"
   // automation platforms shown in the middle (dark / light variants where they exist), [file, light file, w, h]
   const P = [["img-2a43c8c119",0,80,37],["img-5c65805c87","img-fbe8e4be03",123,34],["img-a20b9d44ee","img-84856c7ea1",115,24],["img-831cac2094","img-2cda9b00ab",120,30],["img-ffe6b65b68",0,74,29],["img-658a04fbf6","img-d3a4953de4",139,32]];
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const V = "?v=6", WIDE = { zoom: 80, pipedrive: 80, salesforce: 64, myob: 72, sage: 72, onedrive: 60 };   // wide wordmarks get a wider box; V busts the image cache
+  const V = "?v=7", WIDE = { zoom: 80, pipedrive: 80, salesforce: 64, myob: 72, sage: 72, onedrive: 60 };   // wide wordmarks get a wider box; V busts the image cache
   const HX = 280, HY = 175, PW = 170, PH = 70, LX = 50, RX = 510, GAP = 86, T = 46, SW = 3000, AFTER_PICK = 5000;
   let cur = 0, timer = 0, hubI = 0;
   const flag = (f) => f === "i" ? " f-inv" : f === "w" ? " f-white" : "";
@@ -951,11 +950,38 @@ Cal("inline",{elementOrSelector:"#cal-inline",calLink:"muhammad-umar-8092/15min"
     `<g class="f-hub"><rect class="f-ring" x="${HX - PW / 2}" y="${HY - PH / 2}" width="${PW}" height="${PH}" rx="${PH / 2}"/><rect class="f-ring" style="animation-delay:1.4s" x="${HX - PW / 2}" y="${HY - PH / 2}" width="${PW}" height="${PH}" rx="${PH / 2}"/>` +
     `<rect class="f-pill" x="${HX - PW / 2}" y="${HY - PH / 2}" width="${PW}" height="${PH}" rx="${PH / 2}"/>${hub}<text class="f-cap" x="${HX}" y="${HY + PH / 2 + 22}">Automation</text></g>`;
   const dyn = document.getElementById("flowDyn") || svg.querySelector("#flowDyn");
+  // phone layout (360 wide): inputs in a row on top, the platform in the middle, outputs in a row below
+  const MX = 180, MY = 172, MPW = 150, MPH = 60, TOP = 44, BOT = 312, MT = 40, MGAP = 86;
+  const hubM = P.map(([a, b, w, h], i) => {
+    const k = .75, ww = w * k, hh = h * k, im = (file, cls) => `<image class="${cls}" href="assets/${file}.png" x="${MX - ww / 2}" y="${MY - hh / 2}" width="${ww}" height="${hh}"/>`;
+    return `<g class="hub-logo${i === 0 ? " on" : ""}">${b ? im(a, "on-dark") + im(b, "on-light") : im(a, "")}</g>`;
+  }).join("");
+  svgM.innerHTML =
+    `<defs><radialGradient id="fhgm"><stop offset="0" style="stop-color:var(--accent);stop-opacity:.28"/><stop offset="1" style="stop-color:var(--accent);stop-opacity:0"/></radialGradient></defs>` +
+    `<circle cx="${MX}" cy="${MY}" r="130" fill="url(#fhgm)"/><g id="flowDynM"></g>` +
+    `<g class="f-hub"><rect class="f-ring" x="${MX - MPW / 2}" y="${MY - MPH / 2}" width="${MPW}" height="${MPH}" rx="${MPH / 2}"/><rect class="f-ring" style="animation-delay:1.4s" x="${MX - MPW / 2}" y="${MY - MPH / 2}" width="${MPW}" height="${MPH}" rx="${MPH / 2}"/>` +
+    `<rect class="f-pill" x="${MX - MPW / 2}" y="${MY - MPH / 2}" width="${MPW}" height="${MPH}" rx="${MPH / 2}"/>${hubM}</g>`;
+  const dynM = svgM.querySelector("#flowDynM");
+  const rowM = (items, y, into, delay0) => {
+    const n = items.length;
+    return items.map(([slug, label, f], i) => {
+      const x = MX + (i - (n - 1) / 2) * MGAP, ex = MX + (i - (n - 1) / 2) * 26, w = (WIDE[slug] || MT) * .85;
+      const d = into
+        ? `M${x} ${y + MT / 2 + 24}C${x} ${y + 76} ${ex} ${MY - 70} ${ex} ${MY - MPH / 2}`
+        : `M${ex} ${MY + MPH / 2}C${ex} ${MY + 70} ${x} ${y - 76} ${x} ${y - MT / 2 - 6}`;
+      const dl = (delay0 + i * 0.08).toFixed(2), pk = (+dl + 0.8 + (i % 3) * 0.25).toFixed(2);
+      return `<path class="f-line" pathLength="1" d="${d}" style="stroke:var(--accent);stroke-opacity:.55;animation-delay:${dl}s"/>` +
+        (reduce ? "" : `<path class="f-packet" pathLength="100" d="${d}" style="--d:${pk}s"/>`) +
+        `<g class="f-node" style="animation-delay:${dl}s"><g class="f-bob" style="--b:${(i * -0.7).toFixed(1)}s">` +
+        `<image class="${flag(f).trim()}" href="assets/apps/${slug}.png${V}" x="${x - w / 2}" y="${y - MT / 2}" width="${w}" height="${MT}"/>` +
+        `<text x="${x}" y="${y + MT / 2 + 15}">${label}</text></g></g>`;
+    }).join("");
+  };
   const show = (i) => {
     cur = i;
     const items = G[i][1], half = Math.ceil(items.length / 2);
     dyn.innerHTML = side(items.slice(0, half), LX, -1, 0) + side(items.slice(half), RX, 1, 0.3);
-    grid.innerHTML = items.map(([slug, label, f], k) => `<li style="animation-delay:${k * 0.05}s"><img class="${flag(f).trim()}" src="assets/apps/${slug}.png${V}" alt="" width="56" height="46" loading="lazy"><span>${label}</span></li>`).join("");
+    dynM.innerHTML = rowM(items.slice(0, half), TOP, true, 0) + rowM(items.slice(half), BOT, false, 0.3);
     [...tabs.children].forEach((b, k) => b.setAttribute("aria-selected", k === i));
   };
   // every 3 s; after a manual pick, wait 5 s, then carry on every 3 s
@@ -969,8 +995,8 @@ Cal("inline",{elementOrSelector:"#cal-inline",calLink:"muhammad-umar-8092/15min"
   show(0);
   if (!reduce) {
     schedule(SW);
-    const logos = svg.querySelectorAll(".hub-logo");
-    setInterval(() => { logos[hubI].classList.remove("on"); hubI = (hubI + 1) % logos.length; logos[hubI].classList.add("on"); }, 1600);
+    const sets = [svg, svgM].map(x => x.querySelectorAll(".hub-logo"));
+    setInterval(() => { sets.forEach(l => l[hubI].classList.remove("on")); hubI = (hubI + 1) % sets[0].length; sets.forEach(l => l[hubI].classList.add("on")); }, 1600);
   }
 })();
 </script>
