@@ -202,7 +202,7 @@ dialog::backdrop{background:rgba(8,8,10,.7);backdrop-filter:blur(3px)}
 .flowchart{display:flex;align-items:stretch;gap:.4rem}
 .stage{display:flex;flex-direction:column;justify-content:center;gap:.5rem;flex:1 1 0}
 .stage-nodes{display:flex;flex-direction:column;gap:.5rem;justify-content:center;flex:1}
-.stage-label{font-size:.78rem;color:var(--muted);text-align:center}
+.stage-label{font-size:.78rem;color:var(--muted);text-align:center;background:var(--panel);position:relative;z-index:1;align-self:center;padding:0 .4rem}
 .node{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:.6rem .7rem;text-align:center}
 .node strong{display:block;font-size:.92rem;line-height:1.25}
 .node small{display:block;font-size:.78rem;color:var(--muted);line-height:1.3;margin-top:.2rem}
@@ -210,7 +210,12 @@ dialog::backdrop{background:rgba(8,8,10,.7);backdrop-filter:blur(3px)}
 .node.ai small{color:inherit;opacity:.85}
 .node.core{border-color:var(--link);border-width:2px}
 .node.end{border-style:dashed;border-color:var(--link)}
-.arrow{flex:none;display:flex;align-items:center;justify-content:center;width:28px;color:var(--link);font-size:1.2rem;font-weight:700}
+.link{flex:none;width:56px}
+.flowchart{position:relative}
+.flow-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.flow-lines .fl{fill:none;stroke:var(--link);stroke-opacity:.55;stroke-width:1.8;stroke-linecap:round}
+.flow-lines .fdot{fill:var(--accent);filter:drop-shadow(0 0 3px var(--accent))}
+.stage{position:relative;z-index:1}
 .legend{display:flex;flex-wrap:wrap;gap:1rem;font-size:.8rem;color:var(--muted);margin-top:1rem}
 .legend span{display:inline-flex;align-items:center;gap:.35rem}
 .legend i{width:14px;height:10px;border-radius:3px;border:1.5px solid var(--line);background:var(--card)}
@@ -227,7 +232,7 @@ dialog::backdrop{background:rgba(8,8,10,.7);backdrop-filter:blur(3px)}
 .diagram.vertical .stage{gap:.4rem}
 .diagram.vertical .stage-nodes{flex-direction:row;flex-wrap:wrap;gap:.5rem}
 .diagram.vertical .stage-nodes .node{flex:1 1 118px}
-.diagram.vertical .arrow{width:auto;height:30px;transform:rotate(90deg)}
+.diagram.vertical .link{width:auto;height:40px}
 .diagram.vertical .legend{justify-content:center}
 .diagram.vertical .chipline{justify-content:center}
 .diagram.vertical .tracks{gap:1.25rem}
@@ -648,7 +653,7 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":
 const nodeHTML = ([t,d,k]) => `<div class="node ${k||""}"><strong>${esc(t)}</strong>${d?`<small>${esc(d)}</small>`:""}</div>`;
 function flowHTML(stages){
   return `<div class="flowchart">` + stages.map((st,i) =>
-    (i ? `<div class="arrow" aria-hidden="true">${st.arrow||"→"}</div>` : "") +
+    (i ? `<div class="link"${st.arrow==="⇄" ? ' data-bi="1"' : ""} aria-hidden="true"></div>` : "") +
     `<div class="stage">${st.label?`<span class="stage-label">${esc(st.label)}</span>`:""}<div class="stage-nodes">${st.nodes.map(nodeHTML).join("")}</div></div>`
   ).join("") + `</div>`;
 }
@@ -711,7 +716,36 @@ function fitDiagram(){
       [...fc.querySelectorAll(".node strong,.node small")].some(n => n.scrollWidth > n.clientWidth + 1);
   });
   diagramEl.classList.toggle("vertical", tooTight);
+  drawFlows();
 }
+/* connect the stages with lines and moving dots: 1 to 1, 1 to many, many to 1 (two-way steps get dots both ways) */
+const calmMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function drawFlows(){
+  diagramEl.querySelectorAll(".flowchart").forEach(fc => {
+    fc.querySelector(":scope > .flow-lines")?.remove();
+    const vert = getComputedStyle(fc).flexDirection === "column", box = fc.getBoundingClientRect();
+    const stages = [...fc.querySelectorAll(".stage")], links = [...fc.querySelectorAll(".link")];
+    const pt = (el, far) => { const r = el.getBoundingClientRect(); return vert ? [r.left - box.left + r.width / 2, (far ? r.bottom : r.top) - box.top] : [(far ? r.right : r.left) - box.left, r.top - box.top + r.height / 2]; };
+    let out = "", n = 0;
+    stages.slice(0, -1).forEach((st, i) => {
+      const A = [...st.querySelectorAll(".node")], B = [...stages[i + 1].querySelectorAll(".node")], pairs = [];
+      if (A.length === B.length) A.forEach((a, k) => pairs.push([a, B[k]])); else A.forEach(a => B.forEach(b => pairs.push([a, b])));
+      pairs.forEach(([a, b]) => {
+        const [x1, y1] = pt(a, true), [x2, y2] = pt(b, false), m = vert ? (y1 + y2) / 2 : (x1 + x2) / 2;
+        const d = vert ? `M${x1} ${y1}C${x1} ${m} ${x2} ${m} ${x2} ${y2}` : `M${x1} ${y1}C${m} ${y1} ${m} ${y2} ${x2} ${y2}`;
+        out += `<path class="fl" d="${d}"/>`;
+        if (!calmMotion) {
+          const rev = links[i]?.dataset.bi === "1", t = (n++ % 3) * 0.4;
+          out += `<circle class="fdot" r="3"><animateMotion dur="2.4s" begin="${t}s" repeatCount="indefinite" path="${d}"/></circle>` +
+                 `<circle class="fdot" r="3"><animateMotion dur="2.4s" begin="${t + 1.2}s" repeatCount="indefinite" path="${d}"/></circle>` +
+                 (rev ? `<circle class="fdot" r="3"><animateMotion dur="2.4s" begin="${t + 0.6}s" repeatCount="indefinite" path="${d}" keyPoints="1;0" keyTimes="0;1" calcMode="linear"/></circle>` : "");
+        }
+      });
+    });
+    fc.insertAdjacentHTML("afterbegin", `<svg class="flow-lines" aria-hidden="true">${out}</svg>`);
+  });
+}
+document.fonts?.ready.then(() => dlg.open && fitDiagram());
 if ("ResizeObserver" in window){ let w = 0; new ResizeObserver(([e]) => { const nw = Math.round(e.contentRect.width); if (nw !== w){ w = nw; if (dlg.open) fitDiagram(); } }).observe(dlg); }
 else window.addEventListener("resize", () => dlg.open && fitDiagram());
 function closeDlg(){ if (dlg.open) dlg.close ? dlg.close() : dlg.removeAttribute("open"); }
