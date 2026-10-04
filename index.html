@@ -306,15 +306,15 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,5.5vw,4rem)
 .card.squig::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--accent)}
 .card h3{font-size:1.15rem}
 .card p{margin:0 0 1.1rem;color:var(--muted);font-size:.96rem;line-height:1.5}
-.card-plat{position:absolute;bottom:1.3rem;right:1.2rem;display:flex;align-items:center;gap:.5rem}
-.card-plat img{display:block;height:16px;width:auto}
+.card-plat{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem .7rem;margin:auto 0 .95rem}
+.card-plat img{display:block;width:auto}
 .builton{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .7rem;margin:-.75rem 0 1.5rem;font-size:.88rem;color:var(--muted)}
-.builton img{display:block;height:20px;width:auto}
+.builton img{display:block;width:auto}
 .mini{display:flex;align-items:center;gap:.3rem;margin:0 0 1rem;flex-wrap:wrap}
 .mini i{display:block;height:8px;border-radius:4px;background:var(--line)}
 .mini i.ai{background:var(--accent)}
 .mini b{display:block;width:8px;height:2px;background:var(--line)}
-.open{margin-top:auto;font-weight:600;font-size:.92rem;color:var(--link);display:inline-flex;align-items:center;gap:.4rem}
+.open{margin-top:0;font-weight:600;font-size:.92rem;color:var(--link);display:inline-flex;align-items:center;gap:.4rem}
 .open::before{content:"";width:16px;height:16px;border-radius:50%;border:1.5px solid currentColor;background:
   linear-gradient(currentColor,currentColor) center/8px 1.5px no-repeat,
   linear-gradient(currentColor,currentColor) center/1.5px 8px no-repeat}
@@ -655,7 +655,7 @@ footer{padding:1.5rem 0;font-size:.85rem;color:var(--muted)}
 /* ---------- projects ---------- */
 // node: [title, detail, kind]  kind: "" | "ai" | "core" | "end"
 const PROJECTS = [
-  { id:"signup", group:"agents", where:"Squig · AI agent",
+  { id:"signup", on:["squig", "n8n"], group:"agents", where:"Squig · AI agent",
     title:"Signup enrichment agent",
     card:"Turns every new signup into a full lead brief inside the customer's CRM.",
     summary:"Every time someone signs up for a customer's product, this agent researches them automatically, so the sales team opens the CRM to a complete brief instead of a bare email address.",
@@ -669,7 +669,7 @@ const PROJECTS = [
     built:["Runs on every new signup with no manual step","Enriches each lead through Apollo, then adds web search and website traffic data","Uses an AI step to consolidate all sources into a single, readable intelligence note","Writes the note back to the lead in the customer's CRM"],
     tags:["Apollo","Web search","Traffic data","AI","CRM"] },
 
-  { id:"research", group:"agents", where:"Squig · AI agent",
+  { id:"research", on:["squig", "n8n", "make", "zapier"], group:"agents", where:"Squig · AI agent",
     title:"Multi-source research agent",
     card:"Builds a full company profile, pain points and decision-makers before sales reaches out.",
     summary:"Pulls signals from several sources at once to build a complete picture of a company: what it runs on, what its customers complain about, and who makes the buying decisions.",
@@ -682,7 +682,7 @@ const PROJECTS = [
     built:["Scrapes the company's tech stack","Runs targeted web searches about the company","Pulls Google Maps listings and analyses reviews for recurring pain points","Identifies decision-makers, then upserts the full profile back to the CRM"],
     tags:["Tech stack scraping","Web search","Google Maps","AI","CRM"] },
 
-  { id:"discovery", group:"agents", where:"Squig · AI agent",
+  { id:"discovery", on:["squig", "make"], group:"agents", where:"Squig · AI agent",
     title:"Net-new lead discovery agent",
     card:"Finds new prospects and checks their websites for buying signals, replacing manual prospecting.",
     summary:"Replaces hours of manual prospecting: it searches for new people and companies, then reads their websites to decide whether they're actually showing buying signals.",
@@ -695,7 +695,7 @@ const PROJECTS = [
     built:["Apollo-driven people and organisation search","AI and web-search evaluation of each candidate's website","Filters on buying-signal keywords so only relevant prospects come through","Replaced a manual prospecting process"],
     tags:["Apollo","Web search","AI"] },
 
-  { id:"outreach", group:"agents", where:"Squig · AI agent",
+  { id:"outreach", on:["squig", "zapier", "n8n"], group:"agents", where:"Squig · AI agent",
     title:"Enrichment-to-outreach agent",
     card:"Sources, qualifies and writes to leads, then loads them straight into email sequences.",
     summary:"Takes the whole top of the funnel off the sales team's plate: it finds leads, decides which ones fit, writes a personal email for each, and queues them for sending.",
@@ -709,7 +709,7 @@ const PROJECTS = [
     built:["Sources leads with Apollo","Scores every lead against the customer's ideal customer profile with AI","Generates personalised email copy for each qualified lead","Pushes leads and copy into Instantly sequences automatically"],
     tags:["Apollo","AI","ICP scoring","Instantly"] },
 
-  { id:"accounting", group:"integrations", where:"Integry · Integration",
+  { id:"accounting", on:["integry", "make"], group:"integrations", where:"Integry · Integration",
     title:"Multi-directional accounting sync",
     card:"Keeps contacts, invoices, taxes and items identical across MYOB, Xero, QuickBooks and a SaaS product.",
     summary:"A two-way sync that keeps a vertical SaaS product and three accounting systems in exact agreement. A change on any side shows up on every other side, without duplicates or overwrites.",
@@ -722,7 +722,7 @@ const PROJECTS = [
     built:["Two-way sync of contacts, invoices, taxes and items across all four systems","Cross-system ID mapping so each record is matched to its counterpart everywhere","Idempotent upserts, so retries never create duplicates","Conflict-safe update logic that keeps data in state parity"],
     tags:["MYOB","Xero","QuickBooks","Two-way sync","Data integrity"] },
 
-  { id:"templates", group:"integrations", where:"Integry · Embedded SDK",
+  { id:"templates", on:["integry"], group:"integrations", where:"Integry · Embedded SDK",
     title:"Email template export",
     card:"Lets users of an email-design product send their templates straight to their email provider.",
     summary:"Users of an email-template design product can export their HTML templates directly into the email service they already use, through an SDK embedded inside that product.",
@@ -735,7 +735,7 @@ const PROJECTS = [
     built:["Export flows that push HTML templates into Gmail, SendGrid, Mailjet, Zoho Mail, BirdSend and other providers","Delivered through Integry's embeddable SDK, integrated into the customer's product","Authentication and account connection handled inside the embedded experience"],
     tags:["Embedded SDK","Gmail","SendGrid","Mailjet","Zoho Mail","BirdSend"] },
 
-  { id:"webinar", group:"integrations", where:"Integry · Integration",
+  { id:"webinar", on:["integry", "zapier"], group:"integrations", where:"Integry · Integration",
     title:"Lead ads to webinar registration",
     card:"Registers LinkedIn and Meta lead-ad submissions as webinar attendees in real time.",
     summary:"When someone fills in a LinkedIn or Meta lead ad, they're registered for the webinar right away, with no CSV exports and no delay.",
@@ -748,7 +748,7 @@ const PROJECTS = [
     built:["Real-time capture of LinkedIn Lead Gen Form and Meta Lead Ads submissions","Mapping of form fields to the webinar platform's attendee fields","Automatic attendee registration in the customer's webinar platform"],
     tags:["LinkedIn","Meta","Real-time","Webinars"] },
 
-  { id:"approvals", group:"integrations", where:"Integry · Developer platforms",
+  { id:"approvals", on:["integry"], group:"integrations", where:"Integry · Developer platforms",
     title:"Microsoft, Google and Meta app verification",
     card:"Hands-on with each platform's developer side, taking connectors through verification and review.",
     summary:"Enterprise customers won't connect an app that shows an unverified warning. I worked directly in Microsoft, Google and Meta's developer consoles to set up, verify and keep enterprise-critical connectors approved.",
@@ -760,7 +760,7 @@ const PROJECTS = [
     built:["Microsoft: app registrations in Entra ID, Graph API permissions, and domain verification","Google: OAuth consent screen setup, scope justification and scope verification","Meta: app configuration, permission requests and App Review","Kept connectors approved and working as each platform changed its APIs and policies"],
     tags:["Azure","Entra ID","Microsoft Graph","Google OAuth","Meta App Review","OAuth 2.0"] },
 
-  { id:"digest", group:"integrations", where:"Integry · Internal automation",
+  { id:"digest", on:["integry", "n8n", "make"], group:"integrations", where:"Integry · Internal automation",
     title:"Daily shipped-work digest",
     card:"Joins a day's commits to their tickets and posts one summary to Slack.",
     summary:"Replaced manual daily ship-tracking with one automated message: what shipped in the last 24 hours, tied to the tickets it was for.",
@@ -773,7 +773,7 @@ const PROJECTS = [
     built:["Aggregates the last 24 hours of commits from GitHub and Bitbucket","Joins each commit to its linked ClickUp ticket","Posts a single consolidated digest to Slack every day"],
     tags:["GitHub","Bitbucket","ClickUp","Slack"] },
 
-  { id:"catalog", group:"integrations", where:"Integry · Internal automation",
+  { id:"catalog", on:["integry", "zapier"], group:"integrations", where:"Integry · Internal automation",
     title:"Live catalog sync",
     card:"Keeps the public app catalog matched to the internal source of truth, every day.",
     summary:"Makes sure the public website always shows exactly the apps and actions the platform supports, by syncing it daily from the internal database.",
@@ -790,15 +790,15 @@ const PROJECTS = [
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 /* where each project was built; p.on can list several platforms, default is the brand in p.where */
 const PLAT = {
-  squig:  { name:"Squig",  dark:"img-ffe6b65b68" },
-  integry:{ name:"Integry",dark:"img-831cac2094", light:"img-2cda9b00ab" },
-  zapier: { name:"Zapier", dark:"img-2a43c8c119" },
-  make:   { name:"Make",   dark:"img-a20b9d44ee", light:"img-84856c7ea1" },
-  n8n:    { name:"n8n",    dark:"img-5c65805c87", light:"img-fbe8e4be03" }
+  squig:  { name:"Squig",  h:13, dark:"img-ffe6b65b68" },
+  integry:{ name:"Integry",h:14, dark:"img-831cac2094", light:"img-2cda9b00ab" },
+  zapier: { name:"Zapier", h:14, dark:"img-2a43c8c119" },
+  make:   { name:"Make",   h:10, dark:"img-a20b9d44ee", light:"img-84856c7ea1" },
+  n8n:    { name:"n8n",    h:13, dark:"img-5c65805c87", light:"img-fbe8e4be03" }
 };
 const platOf = p => p.on || [p.where.split(" · ")[0].toLowerCase()];
-const platImgs = keys => keys.filter(k => PLAT[k]).map(k => { const x = PLAT[k];
-  return x.light ? `<img class="on-dark" src="assets/${x.dark}.webp" alt="${x.name}"><img class="on-light" src="assets/${x.light}.webp" alt="${x.name}">` : `<img src="assets/${x.dark}.webp" alt="${x.name}">`; }).join("");
+const platImgs = (keys, k = 1) => keys.filter(x => PLAT[x]).map(x => { const p = PLAT[x], st = `style="height:${Math.round(p.h * k)}px"`;
+  return p.light ? `<img class="on-dark" src="assets/${p.dark}.webp" alt="${p.name}" ${st}><img class="on-light" src="assets/${p.light}.webp" alt="${p.name}" ${st}>` : `<img src="assets/${p.dark}.webp" alt="${p.name}" ${st}>`; }).join("");
 const nodeHTML = ([t,d,k]) => `<div class="node ${k||""}"><strong>${esc(t)}</strong>${d?`<small>${esc(d)}</small>`:""}</div>`;
 function flowHTML(stages){
   return `<div class="flowchart">` + stages.map((st,i) =>
@@ -826,7 +826,7 @@ function miniHTML(p){
 PROJECTS.forEach(p => {
   const b = document.createElement("button");
   b.type = "button"; b.className = "card" + (p.group==="agents" ? " squig" : "");
-  b.innerHTML = `<span class="card-plat" title="Built on ${esc(platOf(p).map(k => PLAT[k]?.name).filter(Boolean).join(", "))}">${platImgs(platOf(p))}</span>${miniHTML(p)}<h3>${esc(p.title)}</h3><p>${esc(p.card)}</p><span class="open">See how it works</span>`;
+  b.innerHTML = `${miniHTML(p)}<h3>${esc(p.title)}</h3><p>${esc(p.card)}</p><span class="card-plat" title="Built on ${esc(platOf(p).map(k => PLAT[k]?.name).filter(Boolean).join(", "))}">${platImgs(platOf(p), 1.1)}</span><span class="open">See how it works</span>`;
   b.addEventListener("click", () => openProject(p, b));
   document.getElementById(p.group==="agents" ? "cards-agents" : "cards-integrations").appendChild(b);
 });
@@ -846,7 +846,7 @@ function openProject(p, card){
   } else whereEl.textContent = p.where;
   document.getElementById("dlg-title").textContent = p.title;
   document.getElementById("dlg-summary").textContent = p.summary;
-  document.getElementById("dlg-builton").innerHTML = `Built on ${platImgs(platOf(p))}`;
+  document.getElementById("dlg-builton").innerHTML = `Built on ${platImgs(platOf(p), 1.5)}`;
   document.getElementById("dlg-diagram").innerHTML = diagramHTML(p);
   document.getElementById("dlg-outcome").innerHTML = p.outcome ? `<p class="outcome">${esc(p.outcome)}</p>` : "";
   document.getElementById("dlg-built").innerHTML = p.built.map(x => `<li>${esc(x)}</li>`).join("");
