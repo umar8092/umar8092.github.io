@@ -114,7 +114,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,5.5vw,4rem)
 .flow-stage svg{display:block;width:100%;height:auto;overflow:visible}
 .flow-grid{display:none;list-style:none;margin:0;padding:0;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem .5rem}
 .flow-grid li{display:grid;justify-items:center;gap:.35rem;font-size:.72rem;color:var(--muted);text-align:center;animation:flowIn .5s both}
-.flow-grid img{width:46px;height:46px;object-fit:contain}
+.flow-grid img{width:56px;height:46px;object-fit:contain}
 @media (max-width:639px){.flow-stage{display:none}.flow-grid{display:grid}}
 :root:not([data-theme="light"]) .f-inv{filter:invert(1)}
 :root:not([data-theme="light"]) .f-glow{filter:drop-shadow(0 0 1.5px rgba(255,255,255,.75))}
@@ -874,7 +874,7 @@ Cal("inline",{elementOrSelector:"#cal-inline",calLink:"muhammad-umar-8092/15min"
   const svg = document.getElementById("flowSvg"), grid = document.getElementById("flowGrid"), tabs = document.getElementById("flowTabs");
   // [slug, label, flag]  flag: i = invert on dark theme, g = light halo on dark theme
   const G = [
-    ["CRM", [["hubspot","HubSpot"],["zendesk","Zendesk","g"],["dynamics365","Dynamics 365","g"],["pipedrive","Pipedrive"],["gong","Gong"],["salesforce","Salesforce"]]],
+    ["CRM", [["hubspot","HubSpot"],["zendesk","Zendesk","g"],["dynamics365","Dynamics 365","g"],["pipedrive","Pipedrive","i"],["gong","Gong"],["salesforce","Salesforce"]]],
     ["Accounting", [["quickbooks","QuickBooks"],["myob","MYOB"],["sage","Sage"],["square","Square","i"]]],
     ["Comms", [["zoom","Zoom"],["teams","Teams"],["whatsapp","WhatsApp"],["twilio","Twilio"],["discord","Discord"],["outlook","Outlook"],["googlechat","Google Chat"],["facebook","Facebook"]]],
     ["Data", [["googledrive","Google Drive"],["dropbox","Dropbox"],["box","Box"],["onedrive","OneDrive"],["mongodb","MongoDB"],["postgres","Postgres"],["mysql","MySQL"],["redis","Redis"]]],
@@ -883,6 +883,7 @@ Cal("inline",{elementOrSelector:"#cal-inline",calLink:"muhammad-umar-8092/15min"
   // automation platforms shown in the middle (dark / light variants where they exist), [file, light file, w, h]
   const P = [["img-2a43c8c119",0,80,37],["img-5c65805c87","img-fbe8e4be03",123,34],["img-a20b9d44ee","img-84856c7ea1",115,24],["img-831cac2094","img-2cda9b00ab",120,30],["img-ffe6b65b68",0,74,29],["img-658a04fbf6","img-d3a4953de4",139,32]];
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const V = "?v=3", WIDE = { zoom: 80, pipedrive: 80, salesforce: 64 };   // wide wordmarks get a wider box; V busts the image cache
   const HX = 280, HY = 175, PW = 170, PH = 70, LX = 50, RX = 510, GAP = 86, T = 46, SW = 3000, AFTER_PICK = 5000;
   let cur = 0, timer = 0, hubI = 0;
   const flag = (f) => f === "i" ? " f-inv" : f === "g" ? " f-glow" : "";
@@ -890,7 +891,7 @@ Cal("inline",{elementOrSelector:"#cal-inline",calLink:"muhammad-umar-8092/15min"
     const n = items.length;
     return items.map(([slug, label, f], i) => {
       const y = HY + (i - (n - 1) / 2) * GAP, ey = HY + (n === 1 ? 0 : (i / (n - 1) - .5) * 36);
-      const x1 = sx - dir * T / 2, ex = HX + dir * PW / 2;
+      const w = WIDE[slug] || T, x1 = sx - dir * (w / 2 + 5), ex = HX + dir * PW / 2;
       // every path runs left to right, so the packets always travel left to right
       const d = dir < 0
         ? `M${x1} ${y}C${x1 + 80} ${y} ${ex - 80} ${ey} ${ex} ${ey}`
@@ -899,7 +900,7 @@ Cal("inline",{elementOrSelector:"#cal-inline",calLink:"muhammad-umar-8092/15min"
       return `<path class="f-line" pathLength="1" d="${d}" stroke="url(#${dir < 0 ? "fgl" : "fgr"})" style="animation-delay:${dl}s"/>` +
         (reduce ? "" : `<path class="f-packet" pathLength="100" d="${d}" style="--d:${pk}s"/>`) +
         `<g class="f-node" style="animation-delay:${dl}s"><g class="f-bob" style="--b:${(i * -0.7).toFixed(1)}s">` +
-        `<image class="${flag(f).trim()}" href="assets/apps/${slug}.png" x="${sx - T / 2}" y="${y - T / 2}" width="${T}" height="${T}"/>` +
+        `<image class="${flag(f).trim()}" href="assets/apps/${slug}.png${V}" x="${sx - w / 2}" y="${y - T / 2}" width="${w}" height="${T}"/>` +
         `<text x="${sx}" y="${y + T / 2 + 15}">${label}</text></g></g>`;
     }).join("");
   };
@@ -920,7 +921,7 @@ Cal("inline",{elementOrSelector:"#cal-inline",calLink:"muhammad-umar-8092/15min"
     cur = i;
     const items = G[i][1], half = Math.ceil(items.length / 2);
     dyn.innerHTML = side(items.slice(0, half), LX, -1, 0) + side(items.slice(half), RX, 1, 0.3);
-    grid.innerHTML = items.map(([slug, label, f], k) => `<li style="animation-delay:${k * 0.05}s"><img class="${flag(f).trim()}" src="assets/apps/${slug}.png" alt="" width="46" height="46" loading="lazy"><span>${label}</span></li>`).join("");
+    grid.innerHTML = items.map(([slug, label, f], k) => `<li style="animation-delay:${k * 0.05}s"><img class="${flag(f).trim()}" src="assets/apps/${slug}.png${V}" alt="" width="56" height="46" loading="lazy"><span>${label}</span></li>`).join("");
     [...tabs.children].forEach((b, k) => b.setAttribute("aria-selected", k === i));
   };
   // every 3 s; after a manual pick, wait 5 s, then carry on every 3 s
