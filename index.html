@@ -399,9 +399,10 @@ dialog::backdrop{background:rgba(8,8,10,.7);backdrop-filter:blur(3px)}
 @media (max-width:760px){.mentions{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.75rem 1.25rem}}
 .mention h3{font-family:var(--body);font-size:.95rem;font-weight:600;color:var(--muted);margin:0 0 .6rem}
 .mention ul{list-style:none;margin:0;padding:0;display:grid;gap:.15rem}
-.mention a{display:inline-block;font-family:var(--display);font-weight:700;font-size:1.3rem;letter-spacing:-.01em;text-decoration:none;padding:.1rem 0;overflow-wrap:anywhere}
+.mention a{display:inline-flex;align-items:center;gap:.65rem;font-family:var(--display);font-weight:700;font-size:1.3rem;letter-spacing:-.01em;text-decoration:none;padding:.1rem 0;overflow-wrap:anywhere}
 .mention a:hover{color:var(--link);text-decoration:underline;text-underline-offset:4px}
-@media (max-width:760px){.mention a{font-size:1.05rem}}
+.mention a img{width:28px;height:28px;object-fit:contain;flex:none}
+@media (max-width:760px){.mention a{font-size:1.05rem;gap:.5rem}.mention a img{width:24px;height:24px}}
 .all-toggle{border-top:1px solid var(--line);padding-top:1.5rem}
 .all-toggle .btn{border-color:var(--link);color:var(--link)}
 #allApps{margin-top:1.75rem}
@@ -981,10 +982,17 @@ const MENTIONS = {
   "Work and support":[["Slack","https://slack.com"],["Zoom","https://zoom.us"],["Jira","https://www.atlassian.com/software/jira"],["Asana","https://asana.com"],["Zendesk","https://www.zendesk.com"],["Intercom","https://www.intercom.com"]],
   "Social and more":[["LinkedIn","https://www.linkedin.com"],["OpenAI","https://openai.com"],["DocuSign","https://www.docusign.com"],["Twilio","https://www.twilio.com"],["Calendly","https://calendly.com"]]
 };
+const APPLOGO = { "Salesforce":"salesforce","HubSpot":"hubspot","Microsoft Dynamics 365":"dynamics365","Pipedrive":"pipedrive-sq","Zoho CRM":"zoho","Apollo":"apollo",
+  "Microsoft Outlook":"outlook","Microsoft Teams":"teams","OneDrive":"onedrive","Gmail":"gmail","Google Sheets":"googlesheets","Google Drive":"googledrive",
+  "QuickBooks Online":"quickbooks","Xero":"xero","NetSuite":"netsuite","Stripe":"stripe","MYOB":"myob-sq",
+  "Mailchimp":"mailchimp","Klaviyo":"klaviyo","Marketo":"marketo","SendGrid":"sendgrid","ActiveCampaign":"activecampaign",
+  "Slack":"slack","Zoom":"zoom-sq","Jira":"jira","Asana":"asana","Zendesk":"zendesk","Intercom":"intercom",
+  "LinkedIn":"linkedin","OpenAI":"openai","DocuSign":"docusign","Twilio":"twilio","Calendly":"calendly" };
+const APPFLAG = { "Zendesk":"f-white", "OpenAI":"f-white" };   // dark logos turn white on the dark theme
 const mentionsEl = document.getElementById("mentions");
 Object.entries(MENTIONS).forEach(([cat, items]) => {
   mentionsEl.insertAdjacentHTML("beforeend",
-    `<div class="mention"><h3>${esc(cat)}</h3><ul>${items.map(([n,u]) => `<li><a href="${u}" target="_blank" rel="noopener">${esc(n)}</a></li>`).join("")}</ul></div>`);
+    `<div class="mention"><h3>${esc(cat)}</h3><ul>${items.map(([n,u]) => `<li><a href="${u}" target="_blank" rel="noopener">${APPLOGO[n] ? `<img class="${APPFLAG[n]||""}" src="assets/apps/${APPLOGO[n]}.webp?v=9" alt="" width="28" height="28">` : ""}<span>${esc(n)}</span></a></li>`).join("")}</ul></div>`);
 });
 
 /* big number: shows the total immediately, counts up once when scrolled into view */
