@@ -306,6 +306,10 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,5.5vw,4rem)
 .card.squig::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--accent)}
 .card h3{font-size:1.15rem}
 .card p{margin:0 0 1.1rem;color:var(--muted);font-size:.96rem;line-height:1.5}
+.card-plat{position:absolute;bottom:1.3rem;right:1.2rem;display:flex;align-items:center;gap:.5rem}
+.card-plat img{display:block;height:16px;width:auto}
+.builton{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .7rem;margin:-.75rem 0 1.5rem;font-size:.88rem;color:var(--muted)}
+.builton img{display:block;height:20px;width:auto}
 .mini{display:flex;align-items:center;gap:.3rem;margin:0 0 1rem;flex-wrap:wrap}
 .mini i{display:block;height:8px;border-radius:4px;background:var(--line)}
 .mini i.ai{background:var(--accent)}
@@ -637,6 +641,7 @@ footer{padding:1.5rem 0;font-size:.85rem;color:var(--muted)}
       <button type="button" class="close" id="dlg-close" aria-label="Close">×</button>
     </div>
     <p class="summary" id="dlg-summary"></p>
+    <p class="builton" id="dlg-builton"></p>
     <div class="case-label">Architecture</div>
     <div class="diagram" id="dlg-diagram"></div>
     <div id="dlg-outcome"></div>
@@ -783,6 +788,17 @@ const PROJECTS = [
 ];
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+/* where each project was built; p.on can list several platforms, default is the brand in p.where */
+const PLAT = {
+  squig:  { name:"Squig",  dark:"img-ffe6b65b68" },
+  integry:{ name:"Integry",dark:"img-831cac2094", light:"img-2cda9b00ab" },
+  zapier: { name:"Zapier", dark:"img-2a43c8c119" },
+  make:   { name:"Make",   dark:"img-a20b9d44ee", light:"img-84856c7ea1" },
+  n8n:    { name:"n8n",    dark:"img-5c65805c87", light:"img-fbe8e4be03" }
+};
+const platOf = p => p.on || [p.where.split(" · ")[0].toLowerCase()];
+const platImgs = keys => keys.filter(k => PLAT[k]).map(k => { const x = PLAT[k];
+  return x.light ? `<img class="on-dark" src="assets/${x.dark}.webp" alt="${x.name}"><img class="on-light" src="assets/${x.light}.webp" alt="${x.name}">` : `<img src="assets/${x.dark}.webp" alt="${x.name}">`; }).join("");
 const nodeHTML = ([t,d,k]) => `<div class="node ${k||""}"><strong>${esc(t)}</strong>${d?`<small>${esc(d)}</small>`:""}</div>`;
 function flowHTML(stages){
   return `<div class="flowchart">` + stages.map((st,i) =>
@@ -810,7 +826,7 @@ function miniHTML(p){
 PROJECTS.forEach(p => {
   const b = document.createElement("button");
   b.type = "button"; b.className = "card" + (p.group==="agents" ? " squig" : "");
-  b.innerHTML = `${miniHTML(p)}<h3>${esc(p.title)}</h3><p>${esc(p.card)}</p><span class="open">See how it works</span>`;
+  b.innerHTML = `<span class="card-plat" title="Built on ${esc(platOf(p).map(k => PLAT[k]?.name).filter(Boolean).join(", "))}">${platImgs(platOf(p))}</span>${miniHTML(p)}<h3>${esc(p.title)}</h3><p>${esc(p.card)}</p><span class="open">See how it works</span>`;
   b.addEventListener("click", () => openProject(p, b));
   document.getElementById(p.group==="agents" ? "cards-agents" : "cards-integrations").appendChild(b);
 });
@@ -830,6 +846,7 @@ function openProject(p, card){
   } else whereEl.textContent = p.where;
   document.getElementById("dlg-title").textContent = p.title;
   document.getElementById("dlg-summary").textContent = p.summary;
+  document.getElementById("dlg-builton").innerHTML = `Built on ${platImgs(platOf(p))}`;
   document.getElementById("dlg-diagram").innerHTML = diagramHTML(p);
   document.getElementById("dlg-outcome").innerHTML = p.outcome ? `<p class="outcome">${esc(p.outcome)}</p>` : "";
   document.getElementById("dlg-built").innerHTML = p.built.map(x => `<li>${esc(x)}</li>`).join("");
