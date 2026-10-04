@@ -71,7 +71,9 @@ section{padding:clamp(3rem,7vw,5.5rem) 0;border-top:1px solid var(--line)}
 
 /* hero */
 .hero{padding:clamp(3rem,7vw,5rem) 0 clamp(2.5rem,5vw,4rem)}
-.hero .wrap > div{max-width:46rem}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:2.5rem;align-items:center}
+.hero-copy{max-width:46rem}
+@media (min-width:980px){.hero-grid{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:2rem}}
 h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,5.5vw,4rem);line-height:1;letter-spacing:-.03em;margin:0 0 .75rem}
 .role{font-family:var(--display);font-weight:500;font-size:clamp(1.05rem,1.8vw,1.25rem);color:var(--link);margin:0 0 1.25rem}
 .lede-hook{font-weight:600;color:var(--ink)}
@@ -90,7 +92,10 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,5.5vw,4rem)
 /* platforms row */
 .builds{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem .9rem;margin:-.5rem 0 2rem}
 .builds-label{font-size:.85rem;color:var(--muted);letter-spacing:.02em}
-.plats{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none;margin:0;padding:0}
+.builds{align-items:flex-start}
+.builds-label{padding-top:.55rem}
+.plats{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:.5rem;list-style:none;margin:0;padding:0}
+@media (max-width:420px){.plats{grid-template-columns:repeat(2,auto)}}
 .plat{display:inline-flex;align-items:center;height:38px;padding:0;border:1px solid var(--line);border-radius:999px;background:var(--card);font-weight:600;font-size:.92rem;letter-spacing:-.005em;transition:border-color .2s,transform .2s}
 .plat:hover{border-color:var(--link);transform:translateY(-2px)}
 .plat img{display:block;width:auto}
@@ -102,6 +107,31 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,5.5vw,4rem)
   .plat{animation:platIn .5s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(.35s + var(--i) * 90ms)}
   @keyframes platIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 }
+
+
+/* hero flow: apps -> automation -> apps */
+.hero-flow{min-width:0}
+.flow-stage svg{display:block;width:100%;height:auto;overflow:visible}
+.flow-grid{display:none;list-style:none;margin:0;padding:0;grid-template-columns:repeat(4,minmax(0,1fr));gap:.9rem .5rem}
+.flow-grid li{display:grid;justify-items:center;gap:.35rem;font-size:.72rem;color:var(--muted);text-align:center;animation:flowIn .5s both}
+.flow-grid img{width:52px;height:52px;border-radius:14px;background:#fff;border:1px solid var(--line);padding:6px;object-fit:contain}
+@media (max-width:639px){.flow-stage{display:none}.flow-grid{display:grid}}
+.flow-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem;margin-top:1rem}
+.flow-tabs button{font:inherit;font-size:.82rem;font-weight:600;padding:.35rem .8rem;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.flow-tabs button:hover{border-color:var(--link);color:var(--ink)}
+.flow-tabs button[aria-selected="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--link)}
+.f-line{fill:none;stroke:var(--muted);stroke-opacity:.45;stroke-width:1.6;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:fDraw .9s ease-out forwards}
+.f-dot{fill:var(--accent);filter:drop-shadow(0 0 4px var(--accent))}
+.f-node{animation:flowIn .5s both}
+.f-node rect{fill:#fff;stroke:var(--line);stroke-width:1.2}
+.f-node text{fill:var(--muted);font:500 12px var(--body);text-anchor:middle}
+.f-hub circle.core{fill:var(--accent)}
+.f-hub circle.ring{fill:none;stroke:var(--accent);stroke-width:1.6;transform-box:fill-box;transform-origin:center;animation:fPulse 2.6s ease-out infinite}
+.f-hub text{fill:var(--accent-ink);font:700 15px var(--display);text-anchor:middle}
+@keyframes flowIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes fDraw{to{stroke-dashoffset:0}}
+@keyframes fPulse{from{opacity:.8;transform:scale(1)}to{opacity:0;transform:scale(1.7)}}
+@media (prefers-reduced-motion:reduce){.f-line{animation:none;stroke-dashoffset:0}.f-node,.flow-grid li{animation:none}.f-dot,.f-hub .ring{display:none}}
 
 /* work */
 #work{background:var(--panel)}
@@ -300,7 +330,8 @@ footer{padding:1.5rem 0;font-size:.85rem;color:var(--muted)}
 <main>
 <div class="hero">
   <div class="wrap">
-    <div>
+   <div class="hero-grid">
+    <div class="hero-copy">
       <h1 id="name">Muhammad Umar</h1>
       <p class="role">Senior Integration & AI Automation Engineer</p>
       <p class="lede"><strong class="lede-hook">I build production systems that connect APIs, automate business workflows, and give AI agents the tools to act.</strong> 300+ integrations shipped across CRM, accounting and marketing platforms, plus AI agents for lead discovery, research, qualification and outreach.</p>
@@ -319,6 +350,12 @@ footer{padding:1.5rem 0;font-size:.85rem;color:var(--muted)}
         <a class="btn icon" href="https://wa.me/923366677789" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-3.8A8 8 0 1 1 8 19z"/><path d="M9.2 8.6c.2-.4.6-.4.8 0l.6 1.3c.1.3 0 .6-.2.8l-.4.4c.5 1.1 1.4 2 2.5 2.5l.4-.4c.2-.2.5-.3.8-.2l1.3.6c.4.2.4.6 0 .8-.6.6-1.5.8-2.3.5a7 7 0 0 1-4-4c-.3-.8-.1-1.7.5-2.3z"/></svg></a>
       </div>
     </div>
+    <div class="hero-flow" id="heroFlow">
+      <div class="flow-stage"><svg id="flowSvg" viewBox="0 0 560 420" role="img" aria-label="Apps I connect, grouped by category, flowing through an automation"></svg></div>
+      <ul class="flow-grid" id="flowGrid" aria-hidden="true"></ul>
+      <div class="flow-tabs" id="flowTabs" role="tablist" aria-label="App categories"></div>
+    </div>
+   </div>
   </div>
 </div>
 
@@ -820,6 +857,60 @@ render();
 Cal("init",{origin:"https://app.cal.com"});
 Cal("ui",{layout:"month_view"});
 Cal("inline",{elementOrSelector:"#cal-inline",calLink:"muhammad-umar-8092/15min",layout:"month_view"});
+
+// Hero flow: apps -> Automation -> apps, one category at a time
+(() => {
+  const root = document.getElementById("heroFlow");
+  if (!root) return;
+  const svg = document.getElementById("flowSvg"), grid = document.getElementById("flowGrid"), tabs = document.getElementById("flowTabs");
+  const G = [
+    ["CRM & sales", [["hubspot","HubSpot"],["zendesk","Zendesk"],["dynamics365","Dynamics 365"],["pipedrive","Pipedrive"],["gong","Gong"],["pardot","Pardot"]]],
+    ["Accounting", [["quickbooks","QuickBooks"],["myob","MYOB"],["sage","Sage"],["square","Square"]]],
+    ["Communication", [["zoom","Zoom"],["teams","Teams"],["whatsapp","WhatsApp"],["twilio","Twilio"],["discord","Discord"],["outlook","Outlook"],["googlechat","Google Chat"],["facebook","Facebook"]]],
+    ["Files & data", [["googledrive","Google Drive"],["dropbox","Dropbox"],["box","Box"],["onedrive","OneDrive"],["mongodb","MongoDB"],["postgres","Postgres"],["mysql","MySQL"],["redis","Redis"]]],
+    ["Projects & AI", [["openai","OpenAI"],["asana","Asana"],["monday","monday"],["jira","Jira"],["basecamp","Basecamp"],["miro","Miro"],["notion","Notion"],["webflow","Webflow"]]]
+  ];
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const HX = 280, HY = 195, HR = 50, LX = 62, RX = 498, GAP = 86, T = 54;
+  let cur = 0, timer = 0, paused = false;
+  const side = (items, sx, dir, delay0) => {
+    const n = items.length;
+    return items.map(([slug, label], i) => {
+      const y = HY + (i - (n - 1) / 2) * GAP;
+      const a = ((n === 1 ? 0 : (i / (n - 1) - .5)) * 80) * Math.PI / 180;   // fan the lines around the hub
+      const ex = HX + dir * HR * Math.cos(a), ey = HY + HR * Math.sin(a), x1 = sx - dir * T / 2;
+      const into = dir < 0;    // left side flows into the hub, right side flows out of it
+      const d = into
+        ? `M${x1} ${y}C${x1 - dir * 80} ${y} ${ex + dir * 70} ${ey} ${ex} ${ey}`
+        : `M${ex} ${ey}C${ex + dir * 70} ${ey} ${x1 - dir * 80} ${y} ${x1} ${y}`;
+      const dl = (delay0 + i * 0.09).toFixed(2);
+      return `<path class="f-line" pathLength="1" d="${d}" style="animation-delay:${dl}s"/>` +
+        (reduce ? "" : `<circle class="f-dot" r="3.2"><animateMotion dur="${(2.6 + i * 0.35).toFixed(1)}s" begin="${(+dl + 0.9).toFixed(1)}s" repeatCount="indefinite" path="${d}"/></circle>`) +
+        `<g class="f-node" style="animation-delay:${dl}s"><rect x="${sx - T / 2}" y="${y - T / 2}" width="${T}" height="${T}" rx="14"/>` +
+        `<image href="assets/apps/${slug}.png" x="${sx - 19}" y="${y - 19}" width="38" height="38"/><text x="${sx}" y="${y + T / 2 + 15}">${label}</text></g>`;
+    }).join("");
+  };
+  const show = (i) => {
+    cur = i;
+    const items = G[i][1], half = Math.ceil(items.length / 2);
+    svg.innerHTML = side(items.slice(0, half), LX, -1, 0) + side(items.slice(half), RX, 1, 0.35) +
+      `<g class="f-hub"><circle class="ring" cx="${HX}" cy="${HY}" r="${HR}"/><circle class="core" cx="${HX}" cy="${HY}" r="${HR}"/><text x="${HX}" y="${HY + 5}">Automation</text></g>`;
+    grid.innerHTML = items.map(([slug, label], k) => `<li style="animation-delay:${k * 0.05}s"><img src="assets/apps/${slug}.png" alt="" width="52" height="52" loading="lazy"><span>${label}</span></li>`).join("");
+    [...tabs.children].forEach((b, k) => b.setAttribute("aria-selected", k === i));
+  };
+  G.forEach(([name], i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.role = "tab"; b.textContent = name;
+    b.addEventListener("click", () => { paused = true; clearInterval(timer); show(i); });
+    tabs.appendChild(b);
+  });
+  show(0);
+  if (!reduce) {
+    timer = setInterval(() => { if (!paused && !document.hidden) show((cur + 1) % G.length); }, 7000);
+    root.addEventListener("mouseenter", () => paused = true);
+    root.addEventListener("mouseleave", () => paused = false);
+  }
+})();
 </script>
 </body>
 </html>
