@@ -109,29 +109,38 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,5.5vw,4rem)
 }
 
 
-/* hero flow: apps -> automation -> apps */
+/* hero flow: apps -> automation platform -> apps */
 .hero-flow{min-width:0}
 .flow-stage svg{display:block;width:100%;height:auto;overflow:visible}
-.flow-grid{display:none;list-style:none;margin:0;padding:0;grid-template-columns:repeat(4,minmax(0,1fr));gap:.9rem .5rem}
+.flow-grid{display:none;list-style:none;margin:0;padding:0;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem .5rem}
 .flow-grid li{display:grid;justify-items:center;gap:.35rem;font-size:.72rem;color:var(--muted);text-align:center;animation:flowIn .5s both}
-.flow-grid img{width:52px;height:52px;border-radius:14px;background:#fff;border:1px solid var(--line);padding:6px;object-fit:contain}
+.flow-grid img{width:46px;height:46px;object-fit:contain}
 @media (max-width:639px){.flow-stage{display:none}.flow-grid{display:grid}}
-.flow-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem;margin-top:1rem}
-.flow-tabs button{font:inherit;font-size:.82rem;font-weight:600;padding:.35rem .8rem;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+:root:not([data-theme="light"]) .f-inv{filter:invert(1)}
+:root:not([data-theme="light"]) .f-glow{filter:drop-shadow(0 0 1.5px rgba(255,255,255,.75))}
+.flow-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:.35rem;margin-top:.75rem}
+.flow-tabs button{font:inherit;font-size:.8rem;font-weight:600;padding:.3rem .7rem;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;transition:border-color .2s,color .2s,background .2s}
 .flow-tabs button:hover{border-color:var(--link);color:var(--ink)}
 .flow-tabs button[aria-selected="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--link)}
-.f-line{fill:none;stroke:var(--muted);stroke-opacity:.45;stroke-width:1.6;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:fDraw .9s ease-out forwards}
-.f-dot{fill:var(--accent);filter:drop-shadow(0 0 4px var(--accent))}
+.f-line{fill:none;stroke-width:2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:fDraw .8s ease-out forwards}
+.f-packet{fill:none;stroke:var(--accent);stroke-width:3.2;stroke-linecap:round;stroke-dasharray:2 23;opacity:0;filter:drop-shadow(0 0 3px var(--accent));animation:fFlow 1.5s linear infinite,fShow .3s ease-out forwards;animation-delay:var(--d)}
 .f-node{animation:flowIn .5s both}
-.f-node rect{fill:#fff;stroke:var(--line);stroke-width:1.2}
+.f-bob{animation:fBob 4.5s ease-in-out infinite;animation-delay:var(--b)}
 .f-node text{fill:var(--muted);font:500 12px var(--body);text-anchor:middle}
-.f-hub circle.core{fill:var(--accent)}
-.f-hub circle.ring{fill:none;stroke:var(--accent);stroke-width:1.6;transform-box:fill-box;transform-origin:center;animation:fPulse 2.6s ease-out infinite}
-.f-hub text{fill:var(--accent-ink);font:700 15px var(--display);text-anchor:middle}
+.f-glowbg{fill:url(#fhg)}
+.f-pill{fill:var(--card);stroke:var(--accent);stroke-width:1.6}
+.f-ring{fill:none;stroke:var(--accent);stroke-width:1.5;transform-box:fill-box;transform-origin:center;animation:fPulse 2.8s ease-out infinite}
+.hub-logo{opacity:0;transition:opacity .45s}
+.hub-logo.on{opacity:1}
+:root[data-theme="light"] .on-dark,:root:not([data-theme="light"]) .on-light{display:none}
+.f-cap{fill:var(--muted);font:600 11px var(--body);letter-spacing:.14em;text-anchor:middle;text-transform:uppercase}
 @keyframes flowIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes fDraw{to{stroke-dashoffset:0}}
-@keyframes fPulse{from{opacity:.8;transform:scale(1)}to{opacity:0;transform:scale(1.7)}}
-@media (prefers-reduced-motion:reduce){.f-line{animation:none;stroke-dashoffset:0}.f-node,.flow-grid li{animation:none}.f-dot,.f-hub .ring{display:none}}
+@keyframes fFlow{to{stroke-dashoffset:-25}}
+@keyframes fShow{to{opacity:1}}
+@keyframes fBob{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
+@keyframes fPulse{from{opacity:.7;transform:scale(1)}to{opacity:0;transform:scale(1.35,1.9)}}
+@media (prefers-reduced-motion:reduce){.f-line{animation:none;stroke-dashoffset:0}.f-node,.flow-grid li{animation:none}.f-bob,.f-packet,.f-ring{animation:none;display:none}.f-bob{display:inline}}
 
 /* work */
 #work{background:var(--panel)}
@@ -351,7 +360,7 @@ footer{padding:1.5rem 0;font-size:.85rem;color:var(--muted)}
       </div>
     </div>
     <div class="hero-flow" id="heroFlow">
-      <div class="flow-stage"><svg id="flowSvg" viewBox="0 0 560 420" role="img" aria-label="Apps I connect, grouped by category, flowing through an automation"></svg></div>
+      <div class="flow-stage"><svg id="flowSvg" viewBox="0 0 560 350" role="img" aria-label="Apps I connect, grouped by category, flowing through an automation platform such as Zapier, Make or n8n"></svg></div>
       <ul class="flow-grid" id="flowGrid" aria-hidden="true"></ul>
       <div class="flow-tabs" id="flowTabs" role="tablist" aria-label="App categories"></div>
     </div>
@@ -858,57 +867,75 @@ Cal("init",{origin:"https://app.cal.com"});
 Cal("ui",{layout:"month_view"});
 Cal("inline",{elementOrSelector:"#cal-inline",calLink:"muhammad-umar-8092/15min",layout:"month_view"});
 
-// Hero flow: apps -> Automation -> apps, one category at a time
+// Hero flow: apps -> automation platform -> apps, one category at a time
 (() => {
   const root = document.getElementById("heroFlow");
   if (!root) return;
   const svg = document.getElementById("flowSvg"), grid = document.getElementById("flowGrid"), tabs = document.getElementById("flowTabs");
+  // [slug, label, flag]  flag: i = invert on dark theme, g = light halo on dark theme
   const G = [
-    ["CRM & sales", [["hubspot","HubSpot"],["zendesk","Zendesk"],["dynamics365","Dynamics 365"],["pipedrive","Pipedrive"],["gong","Gong"],["pardot","Pardot"]]],
+    ["CRM", [["hubspot","HubSpot"],["zendesk","Zendesk","g"],["dynamics365","Dynamics 365","g"],["pipedrive","Pipedrive"],["gong","Gong"],["pardot","Pardot"]]],
     ["Accounting", [["quickbooks","QuickBooks"],["myob","MYOB"],["sage","Sage"],["square","Square"]]],
-    ["Communication", [["zoom","Zoom"],["teams","Teams"],["whatsapp","WhatsApp"],["twilio","Twilio"],["discord","Discord"],["outlook","Outlook"],["googlechat","Google Chat"],["facebook","Facebook"]]],
-    ["Files & data", [["googledrive","Google Drive"],["dropbox","Dropbox"],["box","Box"],["onedrive","OneDrive"],["mongodb","MongoDB"],["postgres","Postgres"],["mysql","MySQL"],["redis","Redis"]]],
-    ["Projects & AI", [["openai","OpenAI"],["asana","Asana"],["monday","monday"],["jira","Jira"],["basecamp","Basecamp"],["miro","Miro"],["notion","Notion"],["webflow","Webflow"]]]
+    ["Comms", [["zoom","Zoom"],["teams","Teams"],["whatsapp","WhatsApp"],["twilio","Twilio"],["discord","Discord"],["outlook","Outlook"],["googlechat","Google Chat"],["facebook","Facebook"]]],
+    ["Data", [["googledrive","Google Drive"],["dropbox","Dropbox"],["box","Box"],["onedrive","OneDrive"],["mongodb","MongoDB"],["postgres","Postgres"],["mysql","MySQL"],["redis","Redis"]]],
+    ["Work & AI", [["openai","OpenAI","i"],["asana","Asana"],["monday","monday"],["jira","Jira"],["basecamp","Basecamp","i"],["miro","Miro"],["notion","Notion"],["webflow","Webflow"]]]
   ];
+  // automation platforms shown in the middle (dark / light variants where they exist), [file, light file, w, h]
+  const P = [["img-2a43c8c119",0,80,37],["img-5c65805c87","img-fbe8e4be03",123,34],["img-a20b9d44ee","img-84856c7ea1",115,24],["img-831cac2094","img-2cda9b00ab",120,30],["img-ffe6b65b68",0,74,29],["img-658a04fbf6","img-d3a4953de4",139,32]];
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const HX = 280, HY = 195, HR = 50, LX = 62, RX = 498, GAP = 86, T = 54;
-  let cur = 0, timer = 0, paused = false;
+  const HX = 280, HY = 175, PW = 170, PH = 70, LX = 50, RX = 510, GAP = 86, T = 46, SW = 3000, AFTER_PICK = 5000;
+  let cur = 0, timer = 0, hubI = 0;
+  const flag = (f) => f === "i" ? " f-inv" : f === "g" ? " f-glow" : "";
   const side = (items, sx, dir, delay0) => {
     const n = items.length;
-    return items.map(([slug, label], i) => {
-      const y = HY + (i - (n - 1) / 2) * GAP;
-      const a = ((n === 1 ? 0 : (i / (n - 1) - .5)) * 80) * Math.PI / 180;   // fan the lines around the hub
-      const ex = HX + dir * HR * Math.cos(a), ey = HY + HR * Math.sin(a), x1 = sx - dir * T / 2;
-      const into = dir < 0;    // left side flows into the hub, right side flows out of it
-      const d = into
-        ? `M${x1} ${y}C${x1 - dir * 80} ${y} ${ex + dir * 70} ${ey} ${ex} ${ey}`
-        : `M${ex} ${ey}C${ex + dir * 70} ${ey} ${x1 - dir * 80} ${y} ${x1} ${y}`;
-      const dl = (delay0 + i * 0.09).toFixed(2);
-      return `<path class="f-line" pathLength="1" d="${d}" style="animation-delay:${dl}s"/>` +
-        (reduce ? "" : `<circle class="f-dot" r="3.2"><animateMotion dur="${(2.6 + i * 0.35).toFixed(1)}s" begin="${(+dl + 0.9).toFixed(1)}s" repeatCount="indefinite" path="${d}"/></circle>`) +
-        `<g class="f-node" style="animation-delay:${dl}s"><rect x="${sx - T / 2}" y="${y - T / 2}" width="${T}" height="${T}" rx="14"/>` +
-        `<image href="assets/apps/${slug}.png" x="${sx - 19}" y="${y - 19}" width="38" height="38"/><text x="${sx}" y="${y + T / 2 + 15}">${label}</text></g>`;
+    return items.map(([slug, label, f], i) => {
+      const y = HY + (i - (n - 1) / 2) * GAP, ey = HY + (n === 1 ? 0 : (i / (n - 1) - .5) * 36);
+      const x1 = sx - dir * T / 2, ex = HX + dir * PW / 2;
+      // every path runs left to right, so the packets always travel left to right
+      const d = dir < 0
+        ? `M${x1} ${y}C${x1 + 80} ${y} ${ex - 80} ${ey} ${ex} ${ey}`
+        : `M${ex} ${ey}C${ex + 80} ${ey} ${x1 - 80} ${y} ${x1} ${y}`;
+      const dl = (delay0 + i * 0.08).toFixed(2), pk = (+dl + 0.8 + (i % 3) * 0.25).toFixed(2);
+      return `<path class="f-line" pathLength="1" d="${d}" stroke="url(#${dir < 0 ? "fgl" : "fgr"})" style="animation-delay:${dl}s"/>` +
+        (reduce ? "" : `<path class="f-packet" pathLength="100" d="${d}" style="--d:${pk}s"/>`) +
+        `<g class="f-node" style="animation-delay:${dl}s"><g class="f-bob" style="--b:${(i * -0.7).toFixed(1)}s">` +
+        `<image class="${flag(f).trim()}" href="assets/apps/${slug}.png" x="${sx - T / 2}" y="${y - T / 2}" width="${T}" height="${T}"/>` +
+        `<text x="${sx}" y="${y + T / 2 + 15}">${label}</text></g></g>`;
     }).join("");
   };
+  // static parts: gradients, glow, hub pill with the rotating platform logos
+  const hub = P.map(([a, b, w, h], i) => {
+    const im = (file, cls) => `<image class="${cls}" href="assets/${file}.png" x="${HX - w / 2}" y="${HY - h / 2}" width="${w}" height="${h}"/>`;
+    return `<g class="hub-logo${i === 0 ? " on" : ""}">${b ? im(a, "on-dark") + im(b, "on-light") : im(a, "")}</g>`;
+  }).join("");
+  svg.innerHTML =
+    `<defs><linearGradient id="fgl" gradientUnits="userSpaceOnUse" x1="${LX}" x2="${HX - PW / 2}" y1="0" y2="0"><stop offset="0" style="stop-color:var(--muted);stop-opacity:.2"/><stop offset="1" style="stop-color:var(--accent);stop-opacity:.9"/></linearGradient>` +
+    `<linearGradient id="fgr" gradientUnits="userSpaceOnUse" x1="${HX + PW / 2}" x2="${RX}" y1="0" y2="0"><stop offset="0" style="stop-color:var(--accent);stop-opacity:.9"/><stop offset="1" style="stop-color:var(--muted);stop-opacity:.2"/></linearGradient>` +
+    `<radialGradient id="fhg"><stop offset="0" style="stop-color:var(--accent);stop-opacity:.28"/><stop offset="1" style="stop-color:var(--accent);stop-opacity:0"/></radialGradient></defs>` +
+    `<circle class="f-glowbg" cx="${HX}" cy="${HY}" r="150"/><g id="flowDyn"></g>` +
+    `<g class="f-hub"><rect class="f-ring" x="${HX - PW / 2}" y="${HY - PH / 2}" width="${PW}" height="${PH}" rx="${PH / 2}"/><rect class="f-ring" style="animation-delay:1.4s" x="${HX - PW / 2}" y="${HY - PH / 2}" width="${PW}" height="${PH}" rx="${PH / 2}"/>` +
+    `<rect class="f-pill" x="${HX - PW / 2}" y="${HY - PH / 2}" width="${PW}" height="${PH}" rx="${PH / 2}"/>${hub}<text class="f-cap" x="${HX}" y="${HY + PH / 2 + 22}">Automation</text></g>`;
+  const dyn = document.getElementById("flowDyn") || svg.querySelector("#flowDyn");
   const show = (i) => {
     cur = i;
     const items = G[i][1], half = Math.ceil(items.length / 2);
-    svg.innerHTML = side(items.slice(0, half), LX, -1, 0) + side(items.slice(half), RX, 1, 0.35) +
-      `<g class="f-hub"><circle class="ring" cx="${HX}" cy="${HY}" r="${HR}"/><circle class="core" cx="${HX}" cy="${HY}" r="${HR}"/><text x="${HX}" y="${HY + 5}">Automation</text></g>`;
-    grid.innerHTML = items.map(([slug, label], k) => `<li style="animation-delay:${k * 0.05}s"><img src="assets/apps/${slug}.png" alt="" width="52" height="52" loading="lazy"><span>${label}</span></li>`).join("");
+    dyn.innerHTML = side(items.slice(0, half), LX, -1, 0) + side(items.slice(half), RX, 1, 0.3);
+    grid.innerHTML = items.map(([slug, label, f], k) => `<li style="animation-delay:${k * 0.05}s"><img class="${flag(f).trim()}" src="assets/apps/${slug}.png" alt="" width="46" height="46" loading="lazy"><span>${label}</span></li>`).join("");
     [...tabs.children].forEach((b, k) => b.setAttribute("aria-selected", k === i));
   };
+  // every 3 s; after a manual pick, wait 5 s, then carry on every 3 s
+  const schedule = (ms) => { clearTimeout(timer); timer = setTimeout(() => { if (!document.hidden) show((cur + 1) % G.length); schedule(SW); }, ms); };
   G.forEach(([name], i) => {
     const b = document.createElement("button");
     b.type = "button"; b.role = "tab"; b.textContent = name;
-    b.addEventListener("click", () => { paused = true; clearInterval(timer); show(i); });
+    b.addEventListener("click", () => { show(i); if (!reduce) schedule(AFTER_PICK); });
     tabs.appendChild(b);
   });
   show(0);
   if (!reduce) {
-    timer = setInterval(() => { if (!paused && !document.hidden) show((cur + 1) % G.length); }, 7000);
-    root.addEventListener("mouseenter", () => paused = true);
-    root.addEventListener("mouseleave", () => paused = false);
+    schedule(SW);
+    const logos = svg.querySelectorAll(".hub-logo");
+    setInterval(() => { logos[hubI].classList.remove("on"); hubI = (hubI + 1) % logos.length; logos[hubI].classList.add("on"); }, 1600);
   }
 })();
 </script>
