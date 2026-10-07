@@ -420,8 +420,8 @@ dialog::backdrop{background:rgba(8,8,10,.7);backdrop-filter:blur(3px)}
 @media (max-width:760px){.mention a{font-size:1.05rem;gap:.5rem}.mention a img{width:24px;height:24px}}
 .all-toggle{border-top:1px solid var(--line);padding-top:1.5rem}
 .all-toggle .btn{border-color:var(--link);color:var(--link)}
-#allApps{margin-top:1.75rem}
-#allApps[hidden]{display:none}
+#allApps{margin-top:.5rem}
+.dlg-top.sticky{position:sticky;top:0;z-index:2;background:var(--paper);align-items:center;padding:.75rem 0;margin-top:-.75rem}
 .controls{display:grid;grid-template-columns:minmax(0,1fr);gap:.9rem;margin-bottom:1.75rem}
 .search{width:100%;max-width:420px;font:inherit;padding:.75rem 1rem;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink)}
 .search:focus{border-color:var(--link);outline:none}
@@ -561,16 +561,7 @@ footer{padding:1.5rem 0;font-size:.85rem;color:var(--muted)}
     </div>
     <div id="mentions" class="mentions"></div>
     <div class="all-toggle">
-      <button type="button" class="btn" id="toggleAll" aria-expanded="false" aria-controls="allApps">Show all apps</button>
-      <div id="allApps" hidden>
-        <div class="controls">
-          <label for="q" class="count">Search apps</label>
-          <input id="q" class="search" type="search" placeholder="Try HubSpot, Xero or Slack" autocomplete="off">
-          <div class="chips" id="chips" role="group" aria-label="Filter by category"></div>
-          <p class="count" id="count" aria-live="polite"></p>
-        </div>
-        <div id="groups"></div>
-      </div>
+      <button type="button" class="btn" id="toggleAll" aria-haspopup="dialog" aria-controls="appsDlg">Show all apps</button>
     </div>
   </div>
 </section>
@@ -673,6 +664,23 @@ footer{padding:1.5rem 0;font-size:.85rem;color:var(--muted)}
 
 <footer><div class="wrap">© 2026 Muhammad Umar</div></footer>
 
+<dialog id="appsDlg" aria-labelledby="apps-title">
+  <div class="dlg">
+    <div class="dlg-top sticky">
+      <h2 id="apps-title">All apps</h2>
+      <button type="button" class="close" id="apps-close" aria-label="Close">×</button>
+    </div>
+    <div id="allApps">
+        <div class="controls">
+          <label for="q" class="count">Search apps</label>
+          <input id="q" class="search" type="search" placeholder="Try HubSpot, Xero or Slack" autocomplete="off">
+          <div class="chips" id="chips" role="group" aria-label="Filter by category"></div>
+          <p class="count" id="count" aria-live="polite"></p>
+        </div>
+        <div id="groups"></div>
+    </div>
+  </div>
+</dialog>
 <dialog id="dlg" aria-labelledby="dlg-title">
   <div class="dlg">
     <div class="dlg-top">
@@ -1053,12 +1061,17 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "Intersect
 /* full list, behind a toggle */
 const toggle = document.getElementById("toggleAll");
 const allApps = document.getElementById("allApps");
+const appsDlg = document.getElementById("appsDlg");
+document.getElementById("apps-title").textContent = `All ${total} apps`;
 toggle.addEventListener("click", () => {
-  const open = allApps.hidden;
-  allApps.hidden = !open;
-  toggle.setAttribute("aria-expanded", String(open));
-  toggle.textContent = open ? "Hide full list" : `Show all ${total} apps`;
+  lockScroll();
+  if (typeof appsDlg.showModal === "function") appsDlg.showModal(); else appsDlg.setAttribute("open","");
+  appsDlg.scrollTop = 0;
 });
+const closeApps = () => { if (appsDlg.open) appsDlg.close ? appsDlg.close() : appsDlg.removeAttribute("open"); };
+document.getElementById("apps-close").addEventListener("click", closeApps);
+appsDlg.addEventListener("click", e => { if (e.target === appsDlg) closeApps(); });
+appsDlg.addEventListener("close", () => { unlockScroll(); toggle.focus({preventScroll:true}); });
 
 const chipsEl = document.getElementById("chips"), groupsEl = document.getElementById("groups"), countEl = document.getElementById("count"), qEl = document.getElementById("q");
 let active = "All";
