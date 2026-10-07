@@ -1039,7 +1039,7 @@ const APPFLAG = { "Zendesk":"f-white", "OpenAI":"f-white" };   // dark logos tur
 const mentionsEl = document.getElementById("mentions");
 Object.entries(MENTIONS).forEach(([cat, items]) => {
   mentionsEl.insertAdjacentHTML("beforeend",
-    `<div class="mention"><h3>${esc(cat)}</h3><ul>${items.map(([n,u]) => `<li><a href="${u}" target="_blank" rel="noopener">${APPLOGO[n] ? `<img class="${APPFLAG[n]||""}" src="assets/apps/${APPLOGO[n]}.webp?v=9" alt="" width="28" height="28">` : ""}<span>${esc(n)}</span></a></li>`).join("")}</ul></div>`);
+    `<div class="mention"><h3>${esc(cat)}</h3><ul>${items.map(([n,u]) => `<li><a href="${u}" target="_blank" rel="noopener">${APPLOGO[n] ? `<img class="${APPFLAG[n]||""}" src="assets/apps/${APPLOGO[n]}.webp?v=9" alt="" width="28" height="28" loading="lazy" decoding="async">` : ""}<span>${esc(n)}</span></a></li>`).join("")}</ul></div>`);
 });
 
 /* big number: shows the total immediately, counts up once when scrolled into view */
@@ -1138,7 +1138,7 @@ if ("IntersectionObserver" in window) {
   // automation platforms shown in the middle (dark / light variants where they exist), [file, light file, w, h]
   const P = [["img-2a43c8c119",0,80,37],["img-5c65805c87","img-fbe8e4be03",123,34],["img-a20b9d44ee","img-84856c7ea1",115,24],["img-831cac2094","img-2cda9b00ab",120,30],["img-ffe6b65b68",0,74,29],["img-658a04fbf6","img-d3a4953de4",139,32]];
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const V = "?v=8", WIDE = { zoom: 80, pipedrive: 80, salesforce: 64, myob: 72, sage: 72, onedrive: 60 };   // wide wordmarks get a wider box; V busts the image cache
+  const V = "?v=9", WIDE = { zoom: 80, pipedrive: 80, salesforce: 64, myob: 72, sage: 72, onedrive: 60 };   // wide wordmarks get a wider box; V busts the image cache
   const HX = 280, HY = 175, PW = 170, PH = 70, LX = 50, RX = 510, GAP = 86, T = 46, SW = 3000, AFTER_PICK = 5000;
   let cur = 0, timer = 0, hubI = 0;
   const flag = (f) => f === "i" ? " f-inv" : f === "w" ? " f-white" : "";
