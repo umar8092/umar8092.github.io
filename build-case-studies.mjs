@@ -1,4 +1,4 @@
-// Generates /projects/<id>/index.html, sitemap.xml and llms.txt from PROJECTS in index.html.
+// Generates /projects/index.html, /projects/<id>/index.html, sitemap.xml and llms.txt from PROJECTS in index.html.
 // Run after editing PROJECTS: node build-case-studies.mjs
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 
@@ -23,7 +23,7 @@ function page(p, i) {
       author: { "@type": "Person", name: "Muhammad Umar", url: `${SITE}/` }, keywords: p.tags.join(", ") },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
       { "@type": "ListItem", position: 1, name: "Muhammad Umar", item: `${SITE}/` },
-      { "@type": "ListItem", position: 2, name: "Projects", item: `${SITE}/#work` },
+      { "@type": "ListItem", position: 2, name: "Case studies", item: `${SITE}/projects/` },
       { "@type": "ListItem", position: 3, name: p.title, item: url }] }
   ];
   const next = PROJECTS[(i + 1) % PROJECTS.length];
@@ -69,7 +69,7 @@ ol,ul{padding-left:1.3rem}li{margin:.35rem 0}
 </head>
 <body>
 <main>
-<nav class="crumb" aria-label="Breadcrumb"><a href="/">Muhammad Umar</a> / <a href="/#work">Projects</a></nav>
+<nav class="crumb" aria-label="Breadcrumb"><a href="/">Muhammad Umar</a> / <a href="/projects/">Case studies</a></nav>
 <p class="where">${esc(p.where)} · Built on ${esc(builtOn(p))}</p>
 <h1>${esc(p.title)}</h1>
 <p class="lead">${esc(p.summary)}</p>
@@ -98,7 +98,56 @@ PROJECTS.forEach((p, i) => {
   writeFileSync(`projects/${p.id}/index.html`, page(p, i));
 });
 
-const urls = [`${SITE}/`, ...PROJECTS.map(p => `${SITE}/projects/${p.id}/`)];
+
+const GROUPS = [["agents", "AI agents"], ["integrations", "Integrations and automation"]];
+writeFileSync("projects/index.html", `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case studies · Muhammad Umar</title>
+<meta name="description" content="Ten production AI-agent and integration case studies by Muhammad Umar: accounting sync, lead-discovery agents, app verification and more.">
+<link rel="canonical" href="${SITE}/projects/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:url" content="${SITE}/projects/">
+<meta property="og:title" content="Case studies · Muhammad Umar">
+<meta property="og:description" content="Production AI-agent and integration case studies.">
+<meta property="og:image" content="${SITE}/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "Case studies", url: `${SITE}/projects/`, author: { "@type": "Person", name: "Muhammad Umar", url: `${SITE}/` }, hasPart: PROJECTS.map(p => ({ "@type": "Article", headline: p.title, url: `${SITE}/projects/${p.id}/` })) })}</script>
+<style>
+@font-face{font-family:"Bricolage Grotesque";font-weight:700;font-display:swap;src:url(/assets/fonts/f-4efd1a5a.woff2) format("woff2")}
+@font-face{font-family:"Instrument Sans";font-weight:400 600;font-display:swap;src:url(/assets/fonts/f-e190a634.woff2) format("woff2")}
+:root{--paper:#141417;--card:#212126;--ink:#E8E8EC;--muted:#9D9DA8;--line:#2F2F36;--link:#B4A0FB;color-scheme:dark}
+@media (prefers-color-scheme:light){:root{--paper:#E4E4E7;--card:#EEEEF1;--ink:#18181B;--muted:#52525B;--line:#C5C5CD;--link:#5B3BC4;color-scheme:light}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:1.0625rem/1.65 "Instrument Sans","Segoe UI",system-ui,sans-serif}
+main{width:min(900px,100% - 2.5rem);margin:0 auto;padding:2.5rem 0 4rem}
+a{color:var(--link)}
+h1,h2{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;letter-spacing:-.02em;line-height:1.15}
+h1{font-size:clamp(2rem,6vw,3rem);margin:.3rem 0 .5rem}
+h2{font-size:1.4rem;margin:2.2rem 0 1rem}
+.crumb{font-size:.92rem;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+.grid a{display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.2rem;text-decoration:none;color:var(--ink)}
+.grid a:hover{border-color:var(--link)}
+.grid strong{display:block;font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:1.1rem;margin-bottom:.3rem}
+.grid span{color:var(--muted);font-size:.95rem}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb" aria-label="Breadcrumb"><a href="/">Muhammad Umar</a> / Case studies</nav>
+<h1>Case studies</h1>
+<p>Production AI agents and integrations I have built. Each page shows how it works and what I delivered.</p>
+${GROUPS.map(([g, label]) => `<h2>${label}</h2><div class="grid">${PROJECTS.filter(p => p.group === g).map(p => `<a href="/projects/${p.id}/"><strong>${esc(p.title)}</strong><span>${esc(p.card)}</span></a>`).join("")}</div>`).join("\n")}
+</main>
+</body>
+</html>
+`);
+
+const urls = [`${SITE}/`, `${SITE}/projects/`, ...PROJECTS.map(p => `${SITE}/projects/${p.id}/`)];
 writeFileSync("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${u}</loc><lastmod>${today}</lastmod></url>`).join("\n")}
@@ -112,6 +161,7 @@ writeFileSync("llms.txt", `# Muhammad Umar: Senior Integration & AI Automation E
 - Site: ${SITE}/
 - LinkedIn: https://www.linkedin.com/in/umar8092
 - GitHub: https://github.com/umar8092
+- Case studies: ${SITE}/projects/
 - Book a call: ${SITE}/#book
 - Email: umar8092@gmail.com
 
