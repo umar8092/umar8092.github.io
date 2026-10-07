@@ -1,0 +1,32 @@
+# Muhammad Umar: Senior Integration & AI Automation Engineer
+
+> Muhammad Umar builds production systems that connect APIs, automate business workflows and give AI agents the tools to act. 300+ integrations shipped and maintained across CRM, accounting and marketing platforms (500+ APIs explored), plus production AI agents for lead discovery, research, qualification and outreach.
+
+- Site: https://umar8092.github.io/
+- LinkedIn: https://www.linkedin.com/in/umar8092
+- GitHub: https://github.com/umar8092
+- Book a call: https://umar8092.github.io/#book
+- Email: umar8092@gmail.com
+
+## Experience
+
+- AI Automation Engineer (Jan 2026 – Jul 2026): production AI-agent workflows for B2B SaaS customers, orchestrating data, search, CRM and outreach tools.
+- Senior Integration & Solution Engineer (Oct 2021 – Jul 2026): 500+ apps across discovery and delivery, 300+ shipped and maintained live. REST, GraphQL, webhooks, polling, scheduled triggers, OAuth 2.0, JWT and Basic Auth.
+- Bachelor of Information Technology, Bahria University (2021).
+
+## Platforms
+
+Zapier, n8n, Make, Integry, Squig, GoHighLevel. CRMs include Salesforce, HubSpot, Dynamics 365, Pipedrive, Zoho CRM, Close, Keap, Apollo, Clay and Gong; accounting includes Xero, MYOB and QuickBooks.
+
+## Case studies
+
+- [Signup enrichment agent](https://umar8092.github.io/projects/signup/): Turns every new signup into a full lead brief inside the customer's CRM.
+- [Multi-source research agent](https://umar8092.github.io/projects/research/): Builds a full company profile, pain points and decision-makers before sales reaches out.
+- [Net-new lead discovery agent](https://umar8092.github.io/projects/discovery/): Finds new prospects and checks their websites for buying signals, replacing manual prospecting.
+- [Enrichment-to-outreach agent](https://umar8092.github.io/projects/outreach/): Sources, qualifies and writes to leads, then loads them straight into email sequences.
+- [Multi-directional accounting sync](https://umar8092.github.io/projects/accounting/): Keeps contacts, invoices, taxes and items identical across MYOB, Xero, QuickBooks and a SaaS product.
+- [Email template export](https://umar8092.github.io/projects/templates/): Lets users of an email-design product send their templates straight to their email provider.
+- [Lead ads to webinar registration](https://umar8092.github.io/projects/webinar/): Registers LinkedIn and Meta lead-ad submissions as webinar attendees in real time.
+- [Microsoft, Google and Meta app verification](https://umar8092.github.io/projects/approvals/): Hands-on with each platform's developer side, taking connectors through verification and review.
+- [Daily shipped-work digest](https://umar8092.github.io/projects/digest/): Joins a day's commits to their tickets and posts one summary to Slack.
+- [Live catalog sync](https://umar8092.github.io/projects/catalog/): Keeps the public app catalog matched to the internal source of truth, every day.

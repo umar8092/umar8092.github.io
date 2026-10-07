@@ -449,6 +449,11 @@ dialog::backdrop{background:rgba(8,8,10,.7);backdrop-filter:blur(3px)}
 .timeline p.when{margin:0 0 .2rem}
 
 /* education */
+.faq{max-width:820px}
+.faq details{border-bottom:1px solid var(--line);padding:1rem 0}
+.faq summary{cursor:pointer;font-family:var(--display);font-weight:700;font-size:1.1rem}
+.faq details p{margin:.6rem 0 0;color:var(--muted)}
+.case-link{display:inline-block;margin-top:1.2rem;color:var(--link);font-weight:600}
 section.compact{padding:clamp(2rem,5vw,3.25rem) 0}
 section.compact h2{font-size:clamp(1.5rem,3vw,2rem);margin-bottom:1rem}
 .degree{margin:0;display:flex;flex-direction:column;gap:.15rem}
@@ -484,7 +489,8 @@ footer{padding:1.5rem 0;font-size:.85rem;color:var(--muted)}
 .section-note{color:var(--muted);max-width:48em;margin:-1.7rem 0 2.25rem}
 
 </style>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Muhammad Umar", "url": "https://umar8092.github.io/", "jobTitle": "Senior Integration & AI Automation Engineer", "description": "Senior integration engineer and AI automation engineer. 300+ SaaS connectors shipped and maintained, plus production AI agents for lead discovery and outreach.", "sameAs": ["https://www.linkedin.com/in/umar8092"], "knowsAbout": ["API integration", "Workflow automation", "AI agents", "CRM integrations", "Zapier", "n8n", "Make", "Integry", "Squig", "GoHighLevel"]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Muhammad Umar", "url": "https://umar8092.github.io/", "jobTitle": "Senior Integration & AI Automation Engineer", "description": "Senior integration engineer and AI automation engineer. 300+ SaaS connectors shipped and maintained, plus production AI agents for lead discovery and outreach.", "sameAs": ["https://www.linkedin.com/in/umar8092", "https://github.com/umar8092"], "knowsAbout": ["API integration", "Workflow automation", "AI agents", "CRM integrations", "Zapier", "n8n", "Make", "Integry", "Squig", "GoHighLevel"]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What does an integration and AI automation engineer do?", "acceptedAnswer": {"@type": "Answer", "text": "I connect the apps a business already runs on, such as CRMs, accounting, email and marketing tools, so data moves between them automatically, and I build AI agents that research, qualify and act on that data. The work covers API integration, workflow automation and AI-agent orchestration."}}, {"@type": "Question", "name": "Which automation platforms do you work with?", "acceptedAnswer": {"@type": "Answer", "text": "Zapier, n8n, Make, Integry, Squig and GoHighLevel, plus custom code in Python and SQL when a platform is not the right fit."}}, {"@type": "Question", "name": "Which apps can you integrate?", "acceptedAnswer": {"@type": "Answer", "text": "I have shipped or maintained integrations with 300+ apps, including Salesforce, HubSpot, Dynamics 365, Pipedrive, Zoho CRM, Xero, MYOB, QuickBooks, Gmail, Outlook, Slack and Microsoft Teams. If an app has an API (REST, GraphQL or webhooks), I can usually integrate it."}}, {"@type": "Question", "name": "Can you build AI agents for lead generation and sales outreach?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. I have built production agents that enrich new signups, research companies across multiple sources, discover net-new leads with buying signals, and qualify leads against an ideal customer profile before writing personalised emails and loading them into Instantly sequences."}}, {"@type": "Question", "name": "Can you get my app verified by Microsoft, Google or Meta?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. I have taken connectors through Microsoft Entra ID publisher verification, Google OAuth scope verification and Meta App Review, and kept them approved as each platform changed its policies."}}, {"@type": "Question", "name": "How do we get started?", "acceptedAnswer": {"@type": "Answer", "text": "Book a 15-minute video call, or email me with what you want to connect, automate or build. I will tell you how I would approach it."}}]}</script>
 </head>
 <body>
 
@@ -630,6 +636,20 @@ footer{padding:1.5rem 0;font-size:.85rem;color:var(--muted)}
   </div>
 </section>
 
+<section id="faq">
+  <div class="wrap">
+    <h2>FAQ</h2>
+    <div class="faq">
+<details><summary>What does an integration and AI automation engineer do?</summary><p>I connect the apps a business already runs on, such as CRMs, accounting, email and marketing tools, so data moves between them automatically, and I build AI agents that research, qualify and act on that data. The work covers API integration, workflow automation and AI-agent orchestration.</p></details>
+<details><summary>Which automation platforms do you work with?</summary><p>Zapier, n8n, Make, Integry, Squig and GoHighLevel, plus custom code in Python and SQL when a platform is not the right fit.</p></details>
+<details><summary>Which apps can you integrate?</summary><p>I have shipped or maintained integrations with 300+ apps, including Salesforce, HubSpot, Dynamics 365, Pipedrive, Zoho CRM, Xero, MYOB, QuickBooks, Gmail, Outlook, Slack and Microsoft Teams. If an app has an API (REST, GraphQL or webhooks), I can usually integrate it.</p></details>
+<details><summary>Can you build AI agents for lead generation and sales outreach?</summary><p>Yes. I have built production agents that enrich new signups, research companies across multiple sources, discover net-new leads with buying signals, and qualify leads against an ideal customer profile before writing personalised emails and loading them into Instantly sequences.</p></details>
+<details><summary>Can you get my app verified by Microsoft, Google or Meta?</summary><p>Yes. I have taken connectors through Microsoft Entra ID publisher verification, Google OAuth scope verification and Meta App Review, and kept them approved as each platform changed its policies.</p></details>
+<details><summary>How do we get started?</summary><p>Book a 15-minute video call, or email me with what you want to connect, automate or build. I will tell you how I would approach it.</p></details>
+    </div>
+  </div>
+</section>
+
 <section id="book">
   <div class="wrap">
     <h2>Book a call</h2>
@@ -667,6 +687,7 @@ footer{padding:1.5rem 0;font-size:.85rem;color:var(--muted)}
     <h4>Implementation details</h4>
     <ul class="built" id="dlg-built"></ul>
     <div class="tags" id="dlg-tags"></div>
+    <a class="case-link" id="dlg-page" href="/">Read the full case study →</a>
   </div>
 </dialog>
 
@@ -869,6 +890,7 @@ function openProject(p, card){
   document.getElementById("dlg-diagram").innerHTML = diagramHTML(p);
   document.getElementById("dlg-outcome").innerHTML = p.outcome ? `<p class="outcome">${esc(p.outcome)}</p>` : "";
   document.getElementById("dlg-built").innerHTML = p.built.map(x => `<li>${esc(x)}</li>`).join("");
+  document.getElementById("dlg-page").href = `/projects/${p.id}/`;
   document.getElementById("dlg-tags").innerHTML = p.tags.map(x => `<span>${esc(x)}</span>`).join("");
   lockScroll();
   if (typeof dlg.showModal === "function") dlg.showModal(); else dlg.setAttribute("open","");
