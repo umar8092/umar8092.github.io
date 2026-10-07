@@ -35,6 +35,7 @@ function page(p, i) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(p.summary)}">
 <link rel="canonical" href="${url}">
+<link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="article">
 <meta property="og:url" content="${url}">
@@ -108,6 +109,7 @@ writeFileSync("projects/index.html", `<!DOCTYPE html>
 <title>Case studies · Muhammad Umar</title>
 <meta name="description" content="Ten production AI-agent and integration case studies by Muhammad Umar: accounting sync, lead-discovery agents, app verification and more.">
 <link rel="canonical" href="${SITE}/projects/">
+<link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${SITE}/projects/">
