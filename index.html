@@ -271,14 +271,16 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,5.5vw,4rem)
 .flow-stage-m{display:none}
 .flow-stage-m svg{display:block;width:100%;max-width:400px;margin:0 auto;height:auto;overflow:visible}
 @media (max-width:639px){.flow-stage{display:none}.flow-stage-m{display:block}}
-:root:not([data-theme="light"]) .f-inv{filter:invert(1)}
-:root:not([data-theme="light"]) .f-white{filter:brightness(0) invert(1)}
+:root:not([data-theme="light"]) #flowSvg .f-inv{filter:url(#f-inv)}
+:root:not([data-theme="light"]) #flowSvg .f-white{filter:url(#f-white)}
+:root:not([data-theme="light"]) #flowSvgM .f-inv{filter:url(#f-invm)}
+:root:not([data-theme="light"]) #flowSvgM .f-white{filter:url(#f-whitem)}
 .flow-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:.35rem;margin-top:.75rem}
 .flow-tabs button{font:inherit;font-size:.8rem;font-weight:600;padding:.3rem .7rem;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;transition:border-color .2s,color .2s,background .2s}
 .flow-tabs button:hover{border-color:var(--link);color:var(--ink)}
 .flow-tabs button[aria-selected="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--link)}
 .f-line{fill:none;stroke-width:2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:fDraw .8s ease-out forwards}
-.f-packet{fill:none;stroke:var(--accent);stroke-width:3.2;stroke-linecap:round;stroke-dasharray:2 23;opacity:0;filter:drop-shadow(0 0 3px var(--accent));animation:fFlow 1.5s linear infinite,fShow .3s ease-out forwards;animation-delay:var(--d)}
+.f-packet{fill:none;stroke:var(--accent);stroke-width:3.6;stroke-linecap:round;stroke-dasharray:2 23;opacity:0;animation:fFlow 1.5s linear infinite,fShow .3s ease-out forwards;animation-delay:var(--d)}
 .f-node{animation:flowIn .5s both}
 .f-bob{animation:fBob 4.5s ease-in-out infinite;animation-delay:var(--b)}
 .f-node text{fill:var(--muted);font:500 12px var(--body);text-anchor:middle}
@@ -322,6 +324,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,5.5vw,4rem)
 @media (max-width:600px){.cards.four,.cards.three{grid-template-columns:1fr}}
 .card{display:flex;flex-direction:column;align-items:flex-start;text-align:left;font:inherit;color:inherit;background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:1.35rem 1.35rem 1.2rem;cursor:pointer;transition:border-color .15s,transform .15s}
 .card:hover{border-color:var(--link);transform:translateY(-2px)}
+.card{-webkit-tap-highlight-color:rgba(139,92,246,.18)}.card:active{border-color:var(--link);transform:scale(.985)}
 .card{position:relative;overflow:hidden}
 .card.squig::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--accent)}
 .card h3{font-size:1.15rem}
@@ -1165,7 +1168,7 @@ if ("IntersectionObserver" in window) {
     return `<g class="hub-logo${i === 0 ? " on" : ""}">${b ? im(a, "on-dark") + im(b, "on-light") : im(a, "")}</g>`;
   }).join("");
   svg.innerHTML =
-    `<defs><linearGradient id="fgl" gradientUnits="userSpaceOnUse" x1="${LX}" x2="${HX - PW / 2}" y1="0" y2="0"><stop offset="0" style="stop-color:var(--muted);stop-opacity:.2"/><stop offset="1" style="stop-color:var(--accent);stop-opacity:.9"/></linearGradient>` +
+    `<defs><filter id="f-inv" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/></filter><filter id="f-white" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0"/></filter><linearGradient id="fgl" gradientUnits="userSpaceOnUse" x1="${LX}" x2="${HX - PW / 2}" y1="0" y2="0"><stop offset="0" style="stop-color:var(--muted);stop-opacity:.2"/><stop offset="1" style="stop-color:var(--accent);stop-opacity:.9"/></linearGradient>` +
     `<linearGradient id="fgr" gradientUnits="userSpaceOnUse" x1="${HX + PW / 2}" x2="${RX}" y1="0" y2="0"><stop offset="0" style="stop-color:var(--accent);stop-opacity:.9"/><stop offset="1" style="stop-color:var(--muted);stop-opacity:.2"/></linearGradient>` +
     `<radialGradient id="fhg"><stop offset="0" style="stop-color:var(--accent);stop-opacity:.28"/><stop offset="1" style="stop-color:var(--accent);stop-opacity:0"/></radialGradient></defs>` +
     `<circle class="f-glowbg" cx="${HX}" cy="${HY}" r="150"/><g id="flowDyn"></g>` +
@@ -1179,7 +1182,7 @@ if ("IntersectionObserver" in window) {
     return `<g class="hub-logo${i === 0 ? " on" : ""}">${b ? im(a, "on-dark") + im(b, "on-light") : im(a, "")}</g>`;
   }).join("");
   svgM.innerHTML =
-    `<defs><radialGradient id="fhgm"><stop offset="0" style="stop-color:var(--accent);stop-opacity:.28"/><stop offset="1" style="stop-color:var(--accent);stop-opacity:0"/></radialGradient></defs>` +
+    `<defs><filter id="f-invm" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/></filter><filter id="f-whitem" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0"/></filter><radialGradient id="fhgm"><stop offset="0" style="stop-color:var(--accent);stop-opacity:.28"/><stop offset="1" style="stop-color:var(--accent);stop-opacity:0"/></radialGradient></defs>` +
     `<circle cx="${MX}" cy="${MY}" r="130" fill="url(#fhgm)"/><g id="flowDynM"></g>` +
     `<g class="f-hub"><rect class="f-ring" x="${MX - MPW / 2}" y="${MY - MPH / 2}" width="${MPW}" height="${MPH}" rx="${MPH / 2}"/><rect class="f-ring" style="animation-delay:1.4s" x="${MX - MPW / 2}" y="${MY - MPH / 2}" width="${MPW}" height="${MPH}" rx="${MPH / 2}"/>` +
     `<rect class="f-pill" x="${MX - MPW / 2}" y="${MY - MPH / 2}" width="${MPW}" height="${MPH}" rx="${MPH / 2}"/>${hubM}</g>`;
@@ -1207,19 +1210,18 @@ if ("IntersectionObserver" in window) {
     [...tabs.children].forEach((b, k) => b.setAttribute("aria-selected", k === i));
   };
   // every 3 s; after a manual pick, wait 5 s, then carry on every 3 s
-  const schedule = (ms) => { clearTimeout(timer); timer = setTimeout(() => { if (!document.hidden) show((cur + 1) % G.length); schedule(SW); }, ms); };
+  const schedule = (ms) => { clearTimeout(timer); timer = setTimeout(() => { if (!document.hidden) show((cur + 1) % G.length); schedule(reduce ? SW * 2 : SW); }, ms); };
   G.forEach(([name], i) => {
     const b = document.createElement("button");
     b.type = "button"; b.role = "tab"; b.textContent = name;
-    b.addEventListener("click", () => { show(i); if (!reduce) schedule(AFTER_PICK); });
+    b.addEventListener("click", () => { show(i); schedule(AFTER_PICK); });
     tabs.appendChild(b);
   });
   show(0);
-  if (!reduce) {
-    schedule(SW);
-    const sets = [svg, svgM].map(x => x.querySelectorAll(".hub-logo"));
-    setInterval(() => { sets.forEach(l => l[hubI].classList.remove("on")); hubI = (hubI + 1) % sets[0].length; sets.forEach(l => l[hubI].classList.add("on")); }, 1600);
-  }
+  // the tabs keep changing by themselves even with "reduce motion" on (it is only content swapping, no movement), just more slowly
+  schedule(reduce ? SW * 2 : SW);
+  const sets = [svg, svgM].map(x => x.querySelectorAll(".hub-logo"));
+  setInterval(() => { if (document.hidden) return; sets.forEach(l => l[hubI].classList.remove("on")); hubI = (hubI + 1) % sets[0].length; sets.forEach(l => l[hubI].classList.add("on")); }, reduce ? 3200 : 1600);
 })();
 </script>
 </body>
