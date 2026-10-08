@@ -298,7 +298,10 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,5.5vw,4rem)
 @keyframes fBob{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
 @keyframes fPulse{from{opacity:.7;transform:scale(1)}to{opacity:0;transform:scale(1.35,1.9)}}
 @media (prefers-reduced-motion:reduce){:root:not(.motion-on) .f-line{animation:none;stroke-dashoffset:0}:root:not(.motion-on) .f-node{animation:none}:root:not(.motion-on) .f-bob,:root:not(.motion-on) .f-packet,:root:not(.motion-on) .f-ring{animation:none;display:none}:root:not(.motion-on) .f-bob{display:inline}}
-.flow-motion{display:block;margin:.55rem auto 0;font:inherit;font-size:.78rem;font-weight:600;padding:.35rem .8rem;border-radius:999px;border:1px dashed var(--line);background:transparent;color:var(--muted);cursor:pointer}.flow-motion:hover{border-color:var(--link);color:var(--ink)}
+:root.motion-off .f-line{animation:none;stroke-dashoffset:0}:root.motion-off .f-node{animation:none}:root.motion-off .f-bob,:root.motion-off .f-packet,:root.motion-off .f-ring{animation:none;display:none}:root.motion-off .f-bob{display:inline}
+.flow-motion{display:none;align-items:center;gap:.4rem;margin:.6rem auto 0;min-height:40px;font:inherit;font-size:.82rem;font-weight:600;padding:0 .95rem;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer}
+.flow-motion svg{width:16px;height:16px;fill:currentColor}.flow-motion:hover,.flow-motion:active{border-color:var(--link);color:var(--ink)}
+@media (max-width:639px){.flow-motion{display:flex}}
 
 .proof-line{margin:0 0 2rem;color:var(--muted);font-size:1rem}
 .proof-line{font-size:1.1rem;line-height:1.4}
@@ -1141,12 +1144,13 @@ if ("IntersectionObserver" in window) {
   ];
   // automation platforms shown in the middle (dark / light variants where they exist), [file, light file, w, h]
   const P = [["img-2a43c8c119",0,80,37],["img-5c65805c87","img-fbe8e4be03",123,34],["img-a20b9d44ee","img-84856c7ea1",115,24],["img-831cac2094","img-2cda9b00ab",120,30],["img-ffe6b65b68",0,74,29],["img-658a04fbf6","img-d3a4953de4",139,32]];
-  // "Reduce motion" (iPhone: Settings > Accessibility > Motion; Android: Remove animations) switches the movement off.
-  // We respect it, but show a small button so a visitor can play the animation anyway; the choice is remembered.
+  // Play/pause (the button shows on phones only). Default: playing, unless the phone has "Reduce motion" on
+  // (iPhone: Settings > Accessibility > Motion; Android: Remove animations). The choice is remembered.
   const osReduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let playAnyway = false; try { playAnyway = localStorage.getItem("flowMotion") === "on"; } catch (e) {}
-  let reduce = osReduce && !playAnyway;
-  document.documentElement.classList.toggle("motion-on", osReduce && playAnyway);
+  let saved = ""; try { saved = localStorage.getItem("flowMotion") || ""; } catch (e) {}
+  let reduce = saved === "off" ? true : saved === "on" ? false : osReduce;   // reduce = paused
+  const applyMotion = () => { const r = document.documentElement.classList; r.toggle("motion-off", reduce); r.toggle("motion-on", !reduce); };
+  applyMotion();
   const V = "?v=9", WIDE = { zoom: 80, pipedrive: 80, salesforce: 64, myob: 72, sage: 72, onedrive: 60 };   // wide wordmarks get a wider box; V busts the image cache
   const HX = 280, HY = 175, PW = 170, PH = 70, LX = 50, RX = 510, GAP = 86, T = 46, SW = 3000, AFTER_PICK = 5000;
   let cur = 0, timer = 0, hubI = 0;
@@ -1223,13 +1227,13 @@ if ("IntersectionObserver" in window) {
     b.addEventListener("click", () => { show(i); schedule(AFTER_PICK); });
     tabs.appendChild(b);
   });
-  if (osReduce) {
+  {
     const mb = document.createElement("button");
     mb.type = "button"; mb.className = "flow-motion";
-    const label = () => { mb.textContent = reduce ? "Animation is off. Tap to play it" : "Tap to turn the animation off"; mb.setAttribute("aria-pressed", String(!reduce)); };
+    const PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>', PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>';
+    const label = () => { mb.innerHTML = (reduce ? PLAY : PAUSE) + "<span>" + (reduce ? "Play animation" : "Pause animation") + "</span>"; mb.setAttribute("aria-label", reduce ? "Play the animation" : "Pause the animation"); };
     mb.addEventListener("click", () => {
-      reduce = !reduce;
-      document.documentElement.classList.toggle("motion-on", !reduce);
+      reduce = !reduce; applyMotion();
       try { localStorage.setItem("flowMotion", reduce ? "off" : "on"); } catch (e) {}
       show(cur); schedule(reduce ? SW * 2 : SW); label();
     });
