@@ -200,6 +200,9 @@ section{padding:clamp(3rem,7vw,5.5rem) 0;border-top:1px solid var(--line)}
 .top nav{display:flex;gap:1.25rem;font-size:.95rem;margin-left:auto}
 .top nav a{text-decoration:none;color:var(--muted)}
 .top nav a:hover{color:var(--ink)}
+.top .book{flex:none;padding:.45rem 1rem;font-size:.9rem;white-space:nowrap;background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.top .book:hover{filter:brightness(1.1)}
+.top .book:focus-visible{outline:3px solid var(--link);outline-offset:2px}
 .theme{flex:none;position:relative;width:58px;height:32px;border-radius:16px;border:1.5px solid var(--line);padding:0;cursor:pointer;margin-left:.25rem;overflow:hidden;background:linear-gradient(100deg,#8EC3F5,#C9DDF8 55%,#E3DCFA);transition:background .4s,border-color .4s}
 .theme:hover{border-color:var(--ink)}
 .theme .knob{position:absolute;top:3px;left:3px;width:23px;height:23px;border-radius:50%;background:#FFC93C;box-shadow:0 0 7px 2px rgba(255,214,90,.85);transition:transform .45s cubic-bezier(.5,1.4,.5,1),background .4s,box-shadow .4s}
@@ -220,6 +223,8 @@ section{padding:clamp(3rem,7vw,5.5rem) 0;border-top:1px solid var(--line)}
 :root[data-theme="dark"] .theme .stars{opacity:1}
 @media (prefers-reduced-motion:reduce){.theme *{transition:none!important;animation:none!important}}
 @media (max-width:600px){.mark{display:none}.top .wrap{gap:.5rem}.top nav{gap:.85rem;font-size:.9rem;margin-left:0;margin-right:auto}}
+@media (max-width:600px){.top .book{padding:.35rem .7rem;font-size:.82rem}.top nav{gap:.6rem;font-size:.85rem}}
+@media (max-width:440px){.top nav .n-exp{display:none}}
 @media (max-width:360px){.top nav{gap:.6rem;font-size:.85rem}}
 /* touch screens: enlarge tap areas without moving anything (invisible hit zone around small links) */
 @media (pointer:coarse){.top nav a,.plat-mini a{position:relative}.top nav a::after{content:"";position:absolute;inset:-12px -5px}.plat-mini a::after{content:"";position:absolute;inset:-16px -6px}}
@@ -510,10 +515,10 @@ footer{padding:1.5rem 0;font-size:.85rem;color:var(--muted)}
     <nav aria-label="Main">
       <a href="#work">Projects</a>
       <a href="#apps">Apps</a>
-      <a href="#experience">Experience</a>
-      <a href="#book">Book</a>
+      <a class="n-exp" href="#experience">Experience</a>
       <a href="#contact">Contact</a>
     </nav>
+    <a class="btn book" href="#book">Book a Call</a>
     <button type="button" class="theme" id="themeBtn" aria-label="Switch to light mode" title="Switch to light mode">
       <span class="stars" aria-hidden="true"><b></b><b></b><b></b></span><span class="cloud" aria-hidden="true"></span><span class="knob" aria-hidden="true"><i></i><i></i><i></i></span>
     </button>
