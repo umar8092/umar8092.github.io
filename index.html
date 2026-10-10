@@ -278,8 +278,11 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,5.5vw,4rem)
 .hv canvas{display:block;width:100%;aspect-ratio:1.1}
 .hv .tile{background:#fff;border:1px solid var(--line);display:grid;place-items:center;overflow:hidden;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
 .hv .tile img{width:100%;height:100%;min-height:0;object-fit:contain}
-.vz-hub{display:grid;place-items:center;border-radius:50%;background:var(--solid);color:var(--on-solid);font-family:var(--name);font-weight:800;letter-spacing:-.03em}
-.vz-orb{container-type:size;position:relative;width:100%;aspect-ratio:1;margin:auto}
+.vz-hub{position:relative;display:grid;place-items:center;border-radius:50%;background:#fff;border:2px solid var(--accent)}
+.vz-hl{position:absolute;left:50%;top:50%;width:76%;height:auto;max-height:38%;object-fit:contain;transform:translate(-50%,-50%) scale(.88);opacity:0;transition:opacity .45s,transform .45s var(--hv-ease,var(--ease))}
+.vz-hl.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.vz-cap{margin:.9rem auto 0;max-width:34ch;text-align:center;color:var(--muted);font-size:.92rem;line-height:1.4}
+.vz-orb{container-type:size;position:relative;width:100%;aspect-ratio:1;margin:auto;overflow:hidden}
 .vz-rc{position:absolute;left:50%;top:50%;width:calc(var(--R)*2cqw);height:calc(var(--R)*2cqw);margin:calc(var(--R)*-1cqw) 0 0 calc(var(--R)*-1cqw);border:1px dashed var(--line);border-radius:50%}
 .vz-spin{position:absolute;inset:0;animation:vzspin var(--d) linear infinite;animation-direction:var(--dir)}
 .vz-o{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(calc(var(--a)*1deg)) translateX(calc(var(--R)*1cqw))}
@@ -1300,6 +1303,14 @@ if ("IntersectionObserver" in window) {
   const RED = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const okk = list => list.filter(k => LOGO[k]);
   const hv = $("hv"), flow = $("heroFlow");
+  const PLSRC = {integry:'assets/img-2cda9b00ab.webp',make:'assets/img-84856c7ea1.webp',n8n:'assets/img-fbe8e4be03.webp',zapier:'assets/img-2a43c8c119.webp',squig:'assets/img-ffe6b65b68.webp',gohighlevel:'assets/img-d3a4953de4.webp'};
+    const PLK = ["integry", "make", "n8n", "zapier", "squig", "gohighlevel"];
+    let hubI = 0;
+    const hubHTML = () => `<div class="vz-hub" role="img" aria-label="Your app">${PLK.map((k, i) => `<img class="vz-hl${i === hubI ? " on" : ""}" src="${PLSRC[k]}" alt="">`).join("")}</div>`;
+    const plImgs = PLK.map(k => { const im = new Image(); im.src = PLSRC[k]; return im; });
+    setInterval(() => { if (document.hidden) return; hubI = (hubI + 1) % PLK.length; document.querySelectorAll(".vz-hub").forEach(h => [...h.children].forEach((im, i) => im.classList.toggle("on", i === hubI))); if (window.__hubRedraw) window.__hubRedraw(); }, 2400);
+    const CAP = `<p class="vz-cap">Your app, connected to all of these. Or any of these, connected to each other.</p>`;
+
   const GRAPH_KEYS = okk(["hubspot","slack","stripe","salesforce","xero","notion","gmail","zendesk","quickbooks","asana","mailchimp","twilio","intercom","jira","openai","linkedin","sendgrid","monday","airtable","github","webflow","dropbox","zoom","calendly","trello","discord","clickup","miro"]);
 
   const VIEWS = {
@@ -1309,7 +1320,7 @@ if ("IntersectionObserver" in window) {
         { R: 32.5, d: 62, dir: "reverse", s: 11.5, keys: ["salesforce", "xero", "gmail", "zendesk", "jira", "asana"] },
         { R: 44.5, d: 90, dir: "normal", s: 10.5, keys: ["quickbooks", "twilio", "openai", "linkedin", "github", "webflow", "airtable", "dropbox"] }
       ];
-      el.innerHTML = `<div class="vz-orb">${rings.map(r => { const ks = okk(r.keys), n = ks.length; return `<div class="vz-rc" style="--R:${r.R}"></div><div class="vz-spin" style="--d:${r.d}s;--dir:${r.dir}">${ks.map((k, i) => `<div class="vz-o" style="--a:${(360 / n * i).toFixed(1)};--R:${r.R}"><div class="vz-u"><div class="vz-u2" style="--d:${r.d}s;--rev:${r.dir === "normal" ? "reverse" : "normal"}"><span class="tile" style="--s:${r.s}"><img src="${LOGO[k]}" alt=""></span></div></div></div>`).join("")}</div>`; }).join("")}<div class="vz-hub">MU</div></div>`;
+      el.innerHTML = `<div class="vz-orb">${rings.map(r => { const ks = okk(r.keys), n = ks.length; return `<div class="vz-rc" style="--R:${r.R}"></div><div class="vz-spin" style="--d:${r.d}s;--dir:${r.dir}">${ks.map((k, i) => `<div class="vz-o" style="--a:${(360 / n * i).toFixed(1)};--R:${r.R}"><div class="vz-u"><div class="vz-u2" style="--d:${r.d}s;--rev:${r.dir === "normal" ? "reverse" : "normal"}"><span class="tile" style="--s:${r.s}"><img src="${LOGO[k]}" alt=""></span></div></div></div>`).join("")}</div>`; }).join("")}${hubHTML()}</div>`;
     },
     wall(el) {
       const keys = okk(["salesforce","hubspot","slack","xero","stripe","notion","gmail","zendesk","quickbooks","asana","mailchimp","twilio","intercom","jira","openai","linkedin","sendgrid","monday","airtable","github","webflow","dropbox","zoom","calendly","trello","discord","clickup","miro","linear","googledrive","googlecalendar","mongodb","postgresql","datadog","teams","onedrive","facebook","whatsapp","redis","googlesheets"]).slice(0, 36);
@@ -1335,7 +1346,7 @@ if ("IntersectionObserver" in window) {
       const cm = el.querySelector(".vz-cmap"), cc = el.querySelector(".vz-chips"); let cur = 0;
       const draw = () => {
         const ks = SETS[cur][1], n = ks.length, pts = ks.map((k, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n; return [50 + 37 * Math.cos(a), 50 + 37 * Math.sin(a)]; });
-        cm.innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${pts.map(([x, y], i) => `<line class="vz-ln" style="--k:${i}" x1="50" y1="50" x2="${x}" y2="${y}"/>`).join("")}</svg><div class="vz-hub">MU</div>${ks.map((k, i) => `<span class="tile" style="left:${pts[i][0]}%;top:${pts[i][1]}%;--k:${i}"><img src="${LOGO[k]}" alt="${k}"></span>`).join("")}`;
+        cm.innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${pts.map(([x, y], i) => `<line class="vz-ln" style="--k:${i}" x1="50" y1="50" x2="${x}" y2="${y}"/>`).join("")}</svg>${hubHTML()}${ks.map((k, i) => `<span class="tile" style="left:${pts[i][0]}%;top:${pts[i][1]}%;--k:${i}"><img src="${LOGO[k]}" alt="${k}"></span>`).join("")}`;
         cc.querySelectorAll("button").forEach((b, i) => b.setAttribute("aria-pressed", i === cur));
       };
       cc.addEventListener("click", e => { const b = e.target.closest("button"); if (b) { cur = +b.dataset.i; draw(); } });
@@ -1369,7 +1380,8 @@ if ("IntersectionObserver" in window) {
     const dot = (() => { const c = document.createElement("canvas"); c.width = c.height = 64; const x = c.getContext("2d"), g = x.createRadialGradient(32, 32, 0, 32, 32, 32); g.addColorStop(0, "rgba(255,255,255,1)"); g.addColorStop(.35, "rgba(255,255,255,.55)"); g.addColorStop(1, "rgba(255,255,255,0)"); x.fillStyle = g; x.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
     const hubC = document.createElement("canvas"); hubC.width = hubC.height = 256;
     const hubTex = new THREE.CanvasTexture(hubC);
-    const drawHub = () => { const x = hubC.getContext("2d"); x.clearRect(0, 0, 256, 256); x.fillStyle = css("--solid"); x.beginPath(); x.arc(128, 128, 118, 0, 7); x.fill(); x.fillStyle = css("--on-solid"); x.font = "800 112px Bricolage Grotesque, system-ui, sans-serif"; x.textAlign = "center"; x.textBaseline = "middle"; x.fillText("MU", 128, 138); hubTex.needsUpdate = true; };
+    const drawHub = () => { const x = hubC.getContext("2d"); x.clearRect(0, 0, 256, 256); x.fillStyle = "#fff"; x.beginPath(); x.arc(128, 128, 118, 0, 7); x.fill(); x.lineWidth = 8; x.strokeStyle = css("--solid"); x.stroke(); const im = plImgs[hubI]; if (im && im.naturalWidth) { const a = im.naturalWidth / im.naturalHeight, w = 176, h = Math.min(w / a, 90), ww = h * a; x.drawImage(im, 128 - ww / 2, 128 - h / 2, ww, h); } hubTex.needsUpdate = true; };
+    window.__hubRedraw = drawHub; plImgs.forEach(i => i.addEventListener("load", drawHub));
     drawHub(); document.fonts && document.fonts.ready.then(drawHub);
     const hub = new THREE.Sprite(new THREE.SpriteMaterial({ map: hubTex, transparent: true })); hub.scale.set(1.6, 1.6, 1); group.add(hub);
     const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: dot, color: accent, transparent: true, opacity: parseFloat(css("--halo-o")) || .5, depthWrite: false })); halo.scale.set(8, 8, 1); group.add(halo);
@@ -1412,7 +1424,8 @@ if ("IntersectionObserver" in window) {
   const mode = pick();
   if (mode === "flow" || !hv) return;                       // the original diagram stays as it is
   flow.classList.add("hv-on"); hv.hidden = false;
-  VIEWS[mode](hv, () => { hv.innerHTML = ""; VIEWS.orbit(hv); });
+  VIEWS[mode](hv, () => { hv.innerHTML = ""; VIEWS.orbit(hv); hv.insertAdjacentHTML("beforeend", CAP); });
+  hv.insertAdjacentHTML("beforeend", CAP);
 })();
 </script>
 </body>
