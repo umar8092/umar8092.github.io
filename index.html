@@ -270,6 +270,44 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,5.5vw,4rem)
 }
 
 
+/* random hero visuals (orbit, magnetic wall, category map, 3D graph), drawn in this site's own colours and fonts */
+:root{--solid:var(--accent);--on-solid:var(--accent-ink);--glow:color-mix(in srgb,var(--accent) 24%,transparent);--halo-o:.5;--name:var(--display);--hv-ease:cubic-bezier(.16,1,.3,1)}
+:root[data-theme="light"]{--halo-o:.2}
+.hero-flow.hv-on>.flow-stage,.hero-flow.hv-on>.flow-stage-m,.hero-flow.hv-on>.flow-tabs{display:none}
+.hv{position:relative;width:100%;max-width:480px;margin:0 auto}
+.hv canvas{display:block;width:100%;aspect-ratio:1.1}
+.hv .tile{background:#fff;border:1px solid var(--line);display:grid;place-items:center;overflow:hidden;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+.hv .tile img{width:100%;height:100%;min-height:0;object-fit:contain}
+.vz-hub{display:grid;place-items:center;border-radius:50%;background:var(--solid);color:var(--on-solid);font-family:var(--name);font-weight:800;letter-spacing:-.03em}
+.vz-orb{container-type:size;position:relative;width:100%;aspect-ratio:1;margin:auto}
+.vz-rc{position:absolute;left:50%;top:50%;width:calc(var(--R)*2cqw);height:calc(var(--R)*2cqw);margin:calc(var(--R)*-1cqw) 0 0 calc(var(--R)*-1cqw);border:1px dashed var(--line);border-radius:50%}
+.vz-spin{position:absolute;inset:0;animation:vzspin var(--d) linear infinite;animation-direction:var(--dir)}
+.vz-o{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(calc(var(--a)*1deg)) translateX(calc(var(--R)*1cqw))}
+.vz-u{position:absolute;left:0;top:0;transform:rotate(calc(var(--a)*-1deg))}
+.vz-u2{animation:vzspin var(--d) linear infinite;animation-direction:var(--rev)}
+.vz-o .tile{position:absolute;width:calc(var(--s)*1cqw);height:calc(var(--s)*1cqw);margin:calc(var(--s)*-.5cqw) 0 0 calc(var(--s)*-.5cqw);border-radius:calc(var(--s)*.26cqw);padding:calc(var(--s)*.2cqw);box-shadow:0 10px 24px -14px rgb(0 0 0/.5)}
+@keyframes vzspin{to{transform:rotate(360deg)}}
+.vz-orb .vz-hub{position:absolute;left:50%;top:50%;width:19cqw;height:19cqw;margin:-9.5cqw 0 0 -9.5cqw;font-size:6.4cqw;box-shadow:0 0 0 0 var(--glow);animation:vzpulse 3s ease-out infinite}
+@keyframes vzpulse{70%{box-shadow:0 0 0 7cqw transparent}}
+.vz-wall{display:grid;grid-template-columns:repeat(6,1fr);gap:9px}
+.vz-c{aspect-ratio:1;position:relative;transition:transform .25s var(--hv-ease)}
+.vz-c .tile{position:absolute;inset:0;border-radius:20%;padding:20%;animation:vzwave 4.6s ease-in-out infinite;animation-delay:calc(var(--i)*-140ms)}
+@keyframes vzwave{50%{transform:translateY(-5px);opacity:.85}}
+.vz-c.hot .tile{box-shadow:0 16px 32px -14px var(--accent);border-color:var(--accent)}
+.vz-cmap{container-type:size;position:relative;width:100%;aspect-ratio:1;margin:auto}
+.vz-cmap svg{position:absolute;inset:0;width:100%;height:100%}
+.vz-ln{stroke:var(--accent);stroke-width:1.4;vector-effect:non-scaling-stroke;stroke-dasharray:100;stroke-dashoffset:100;animation:vzdraw .8s var(--hv-ease) forwards;animation-delay:calc(var(--k)*70ms);opacity:.7}
+@keyframes vzdraw{to{stroke-dashoffset:0}}
+.vz-cmap .vz-hub{position:absolute;left:50%;top:50%;width:20cqw;height:20cqw;margin:-10cqw 0 0 -10cqw;font-size:6.6cqw;z-index:2;box-shadow:0 0 0 10px var(--glow)}
+.vz-cmap .tile{position:absolute;width:15cqw;height:15cqw;margin:-7.5cqw 0 0 -7.5cqw;border-radius:4cqw;padding:3cqw;box-shadow:0 12px 26px -14px rgb(0 0 0/.55);animation:vzpop .55s var(--hv-ease) backwards;animation-delay:calc(var(--k)*70ms)}
+@keyframes vzpop{from{opacity:0;transform:scale(.4)}}
+.vz-chips{display:flex;flex-wrap:wrap;gap:.35rem;justify-content:center;margin-top:.75rem}
+.vz-chips button{font:inherit;font-size:.8rem;font-weight:600;padding:.3rem .7rem;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;transition:border-color .15s,color .15s,background .15s}
+.vz-chips button:hover{border-color:var(--link);color:var(--ink)}
+.vz-chips button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--link)}
+@media (prefers-reduced-motion:reduce){.vz-spin,.vz-u2,.vz-orb .vz-hub,.vz-c .tile,.vz-cmap .tile{animation:none!important}.vz-ln{animation:none;stroke-dashoffset:0}.vz-cmap .tile{animation:none}}
+@media (max-width:639px){.vz-wall{grid-template-columns:repeat(5,1fr)}.vz-c:nth-child(n+26){display:none}}
+
 /* hero flow: apps -> automation platform -> apps */
 .hero-flow{min-width:0}
 .flow-stage svg{display:block;width:100%;height:auto;overflow:visible}
@@ -542,6 +580,7 @@ footer{padding:1.5rem 0;font-size:.85rem;color:var(--muted)}
       </div>
     </div>
     <div class="hero-flow" id="heroFlow">
+      <div class="hv" id="hv" hidden></div>
       <div class="flow-stage"><svg id="flowSvg" viewBox="0 0 560 350" role="img" aria-label="Apps I connect, grouped by category, flowing through an automation platform such as Zapier, Make or n8n"></svg></div>
       <div class="flow-stage-m"><svg id="flowSvgM" viewBox="0 0 360 360" aria-hidden="true"></svg></div>
       <div class="flow-tabs" id="flowTabs" role="tablist" aria-label="App categories"></div>
@@ -1250,6 +1289,130 @@ if ("IntersectionObserver" in window) {
   const sets = [svg, svgM].map(x => x.querySelectorAll(".hub-logo"));
   let tick = 0;
   setInterval(() => { if (document.hidden || (reduce && (tick++ % 2))) return; sets.forEach(l => l[hubI].classList.remove("on")); hubI = (hubI + 1) % sets[0].length; sets.forEach(l => l[hubI].classList.add("on")); }, 1600);
+})();
+</script>
+<script>
+/* random hero visual: the original flow diagram, 3D graph, orbit, magnetic wall or category map. Never the same one twice in a row.
+   ?hero=flow|graph|orbit|wall|map pins one. */
+(function () {
+  const LOGO = {"activecampaign": "assets/hd/activecampaign.svg", "apollo": "assets/apps/apollo.webp", "asana": "assets/hd/asana.svg", "basecamp": "assets/hd/basecamp.svg", "box": "assets/hd/box.svg", "calendly": "assets/hd/calendly.svg", "discord": "assets/hd/discord.svg", "docusign": "assets/apps/docusign.webp", "dropbox": "assets/hd/dropbox.svg", "dynamics365": "assets/apps/dynamics365.webp", "facebook": "assets/hd/facebook.svg", "gmail": "assets/hd/gmail.svg", "gong": "assets/apps/gong.webp", "googlechat": "assets/apps/googlechat.webp", "googledrive": "assets/hd/googledrive.svg", "googlesheets": "assets/apps/googlesheets.webp", "hubspot": "assets/hd/hubspot.svg", "intercom": "assets/hd/intercom.svg", "jira": "assets/hd/jira.svg", "klaviyo": "assets/apps/klaviyo.webp", "linkedin": "assets/hd/linkedin.svg", "mailchimp": "assets/hd/mailchimp.svg", "marketo": "assets/apps/marketo.webp", "miro": "assets/hd/miro.svg", "monday": "assets/hd/monday.svg", "mongodb": "assets/hd/mongodb.svg", "myob": "assets/apps/myob-sq.webp", "mysql": "assets/apps/mysql.webp", "netsuite": "assets/apps/netsuite.webp", "notion": "assets/hd/notion.svg", "onedrive": "assets/hd/onedrive.svg", "openai": "assets/hd/openai.svg", "outlook": "assets/apps/outlook.webp", "pipedrive": "assets/apps/pipedrive-sq.webp", "postgres": "assets/apps/postgres.webp", "quickbooks": "assets/hd/quickbooks.svg", "redis": "assets/hd/redis.svg", "sage": "assets/hd/sage.svg", "salesforce": "assets/hd/salesforce.svg", "sendgrid": "assets/hd/sendgrid.svg", "slack": "assets/hd/slack.svg", "square": "assets/hd/square.svg", "stripe": "assets/hd/stripe.svg", "teams": "assets/hd/teams.svg", "twilio": "assets/hd/twilio.svg", "webflow": "assets/hd/webflow.svg", "whatsapp": "assets/hd/whatsapp.svg", "xero": "assets/hd/xero.svg", "zendesk": "assets/hd/zendesk.svg", "zoho": "assets/apps/zoho.webp", "zoom": "assets/hd/zoom.svg", "aircall": "assets/hd/aircall.svg", "airtable": "assets/hd/airtable.svg", "amplitude": "assets/hd/amplitude.svg", "bitbucket": "assets/hd/bitbucket.svg", "brevo": "assets/hd/brevo.svg", "campaignmonitor": "assets/hd/campaignmonitor.svg", "chargebee": "assets/hd/chargebee.svg", "clickup": "assets/hd/clickup.svg", "clockify": "assets/hd/clockify.svg", "coda": "assets/hd/coda.svg", "customerio": "assets/hd/customerio.svg", "datadog": "assets/hd/datadog.svg", "delighted": "assets/hd/delighted.svg", "disqus": "assets/hd/disqus.svg", "eventbrite": "assets/hd/eventbrite.svg", "formstack": "assets/hd/formstack.svg", "freedcamp": "assets/hd/freedcamp.svg", "github": "assets/hd/github.svg", "googlecalendar": "assets/hd/googlecalendar.svg", "googledocs": "assets/hd/googledocs.svg", "googleforms": "assets/hd/googleforms.svg", "googlesearchconsole": "assets/hd/googlesearchconsole.svg", "gotomeeting": "assets/hd/gotomeeting.svg", "greenhouse": "assets/hd/greenhouse.svg", "helpscout": "assets/hd/helpscout.svg", "invoiceninja": "assets/hd/invoiceninja.svg", "linear": "assets/hd/linear.svg", "mailgun": "assets/hd/mailgun.svg", "mailjet": "assets/hd/mailjet.svg", "mautic": "assets/hd/mautic.svg", "microsoftteams": "assets/hd/microsoftteams.svg", "pagerduty": "assets/hd/pagerduty.svg", "postgresql": "assets/hd/postgresql.svg", "resend": "assets/hd/resend.svg", "sparkpost": "assets/hd/sparkpost.svg", "surveymonkey": "assets/hd/surveymonkey.svg", "survicate": "assets/hd/survicate.svg", "testrail": "assets/hd/testrail.svg", "todoist": "assets/hd/todoist.svg", "toggl": "assets/hd/toggl.svg", "trello": "assets/hd/trello.svg", "unbounce": "assets/hd/unbounce.svg", "woocommerce": "assets/hd/woocommerce.svg", "workboard": "assets/hd/workboard.svg"};
+  const $ = id => document.getElementById(id);
+  const RED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const okk = list => list.filter(k => LOGO[k]);
+  const hv = $("hv"), flow = $("heroFlow");
+  const GRAPH_KEYS = okk(["hubspot","slack","stripe","salesforce","xero","notion","gmail","zendesk","quickbooks","asana","mailchimp","twilio","intercom","jira","openai","linkedin","sendgrid","monday","airtable","github","webflow","dropbox","zoom","calendly","trello","discord","clickup","miro"]);
+
+  const VIEWS = {
+    orbit(el) {
+      const rings = [
+        { R: 19.5, d: 40, dir: "normal", s: 11, keys: ["hubspot", "slack", "stripe", "notion"] },
+        { R: 32.5, d: 62, dir: "reverse", s: 11.5, keys: ["salesforce", "xero", "gmail", "zendesk", "jira", "asana"] },
+        { R: 44.5, d: 90, dir: "normal", s: 10.5, keys: ["quickbooks", "twilio", "openai", "linkedin", "github", "webflow", "airtable", "dropbox"] }
+      ];
+      el.innerHTML = `<div class="vz-orb">${rings.map(r => { const ks = okk(r.keys), n = ks.length; return `<div class="vz-rc" style="--R:${r.R}"></div><div class="vz-spin" style="--d:${r.d}s;--dir:${r.dir}">${ks.map((k, i) => `<div class="vz-o" style="--a:${(360 / n * i).toFixed(1)};--R:${r.R}"><div class="vz-u"><div class="vz-u2" style="--d:${r.d}s;--rev:${r.dir === "normal" ? "reverse" : "normal"}"><span class="tile" style="--s:${r.s}"><img src="${LOGO[k]}" alt=""></span></div></div></div>`).join("")}</div>`; }).join("")}<div class="vz-hub">MU</div></div>`;
+    },
+    wall(el) {
+      const keys = okk(["salesforce","hubspot","slack","xero","stripe","notion","gmail","zendesk","quickbooks","asana","mailchimp","twilio","intercom","jira","openai","linkedin","sendgrid","monday","airtable","github","webflow","dropbox","zoom","calendly","trello","discord","clickup","miro","linear","googledrive","googlecalendar","mongodb","postgresql","datadog","teams","onedrive","facebook","whatsapp","redis","googlesheets"]).slice(0, 36);
+      el.innerHTML = `<div class="vz-wall">${keys.map((k, i) => `<div class="vz-c"><span class="tile" style="--i:${i}"><img src="${LOGO[k]}" alt=""></span></div>`).join("")}</div>`;
+      const g = el.firstChild, cells = [...g.children]; let pts = [];
+      g.addEventListener("pointerenter", () => pts = cells.map(c => { const r = c.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }));
+      g.addEventListener("pointermove", e => {
+        if (RED) return; let best = -1, bd = 1e9;
+        cells.forEach((c, i) => { const d = Math.hypot(e.clientX - pts[i][0], e.clientY - pts[i][1]), sc = 1 + Math.max(0, 1 - d / 150) * .75; c.style.transform = `scale(${sc.toFixed(3)})`; c.style.zIndex = sc > 1.05 ? 2 : ""; if (d < bd) { bd = d; best = i; } });
+        cells.forEach((c, i) => c.classList.toggle("hot", i === best && bd < 60));
+      });
+      g.addEventListener("pointerleave", () => cells.forEach(c => { c.style.transform = ""; c.style.zIndex = ""; c.classList.remove("hot"); }));
+    },
+    map(el) {
+      const SETS = [
+        ["CRM", ["salesforce", "hubspot", "zendesk", "pipedrive", "zoho", "apollo", "gong", "intercom"]],
+        ["Accounting", ["xero", "quickbooks", "myob", "stripe", "sage", "square", "chargebee", "invoiceninja"]],
+        ["Comms", ["slack", "gmail", "teams", "outlook", "twilio", "zoom", "discord", "whatsapp"]],
+        ["Data", ["mysql", "postgresql", "mongodb", "redis", "airtable", "googlesheets", "datadog", "webflow"]],
+        ["Work & AI", ["openai", "notion", "jira", "asana", "clickup", "trello", "monday", "linear"]]
+      ].map(([n, ks]) => [n, okk(ks)]);
+      el.innerHTML = `<div class="vz-cmap"></div><div class="vz-chips" role="group" aria-label="App categories">${SETS.map(([n], i) => `<button type="button" data-i="${i}" aria-pressed="${i === 0}">${n}</button>`).join("")}</div>`;
+      const cm = el.querySelector(".vz-cmap"), cc = el.querySelector(".vz-chips"); let cur = 0;
+      const draw = () => {
+        const ks = SETS[cur][1], n = ks.length, pts = ks.map((k, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n; return [50 + 37 * Math.cos(a), 50 + 37 * Math.sin(a)]; });
+        cm.innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${pts.map(([x, y], i) => `<line class="vz-ln" style="--k:${i}" x1="50" y1="50" x2="${x}" y2="${y}"/>`).join("")}</svg><div class="vz-hub">MU</div>${ks.map((k, i) => `<span class="tile" style="left:${pts[i][0]}%;top:${pts[i][1]}%;--k:${i}"><img src="${LOGO[k]}" alt="${k}"></span>`).join("")}`;
+        cc.querySelectorAll("button").forEach((b, i) => b.setAttribute("aria-pressed", i === cur));
+      };
+      cc.addEventListener("click", e => { const b = e.target.closest("button"); if (b) { cur = +b.dataset.i; draw(); } });
+      draw();
+    },
+    graph(el, fallbackTo) {
+      el.innerHTML = `<canvas aria-hidden="true"></canvas>`;
+      const canvas = el.firstChild;
+      const sc = document.createElement("script"); sc.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+      sc.onerror = () => fallbackTo(); sc.onload = () => { try { initGraph(canvas); } catch (e) { fallbackTo(); } };
+      document.head.appendChild(sc);
+    }
+  };
+
+  function initGraph(canvas) {
+    const root = document.documentElement, css = v => getComputedStyle(root).getPropertyValue(v).trim();
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(42, 1, .1, 100), group = new THREE.Group(); scene.add(group);
+    let accent = new THREE.Color(css("--accent"));
+    const cardTex = src => new Promise(res => {
+      const im = new Image();
+      im.onload = () => {
+        const c = document.createElement("canvas"); c.width = c.height = 256; const x = c.getContext("2d");
+        x.fillStyle = "#fff"; x.beginPath(); x.roundRect(8, 8, 240, 240, 56); x.fill();
+        const a = (im.naturalWidth || 1) / (im.naturalHeight || 1), m = 150; let w = m, h = m; if (a > 1) h = m / a; else w = m * a;
+        x.drawImage(im, 128 - w / 2, 128 - h / 2, w, h);
+        const t = new THREE.CanvasTexture(c); t.anisotropy = 4; res(t);
+      };
+      im.onerror = () => res(null); im.src = src;
+    });
+    const dot = (() => { const c = document.createElement("canvas"); c.width = c.height = 64; const x = c.getContext("2d"), g = x.createRadialGradient(32, 32, 0, 32, 32, 32); g.addColorStop(0, "rgba(255,255,255,1)"); g.addColorStop(.35, "rgba(255,255,255,.55)"); g.addColorStop(1, "rgba(255,255,255,0)"); x.fillStyle = g; x.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
+    const hubC = document.createElement("canvas"); hubC.width = hubC.height = 256;
+    const hubTex = new THREE.CanvasTexture(hubC);
+    const drawHub = () => { const x = hubC.getContext("2d"); x.clearRect(0, 0, 256, 256); x.fillStyle = css("--solid"); x.beginPath(); x.arc(128, 128, 118, 0, 7); x.fill(); x.fillStyle = css("--on-solid"); x.font = "800 112px Bricolage Grotesque, system-ui, sans-serif"; x.textAlign = "center"; x.textBaseline = "middle"; x.fillText("MU", 128, 138); hubTex.needsUpdate = true; };
+    drawHub(); document.fonts && document.fonts.ready.then(drawHub);
+    const hub = new THREE.Sprite(new THREE.SpriteMaterial({ map: hubTex, transparent: true })); hub.scale.set(1.6, 1.6, 1); group.add(hub);
+    const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: dot, color: accent, transparent: true, opacity: parseFloat(css("--halo-o")) || .5, depthWrite: false })); halo.scale.set(8, 8, 1); group.add(halo);
+    const keys = GRAPH_KEYS.slice(0, 26), nodes = [], pulses = [], lines = [];
+    keys.forEach((k, i) => {
+      const t = (i + .5) / keys.length, phi = Math.acos(1 - 2 * t), th = Math.PI * (1 + Math.sqrt(5)) * i, r = 3.3 + ((i * 37) % 10) / 10 * .9;
+      const pos = new THREE.Vector3(r * Math.sin(phi) * Math.cos(th), r * Math.cos(phi) * .8, r * Math.sin(phi) * Math.sin(th));
+      const sp = new THREE.Sprite(new THREE.SpriteMaterial({ transparent: true, opacity: 0 })); sp.position.copy(pos); sp.scale.set(.95, .95, 1); group.add(sp);
+      const ln = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), pos]), new THREE.LineBasicMaterial({ color: accent, transparent: true, opacity: .34 })); group.add(ln); lines.push(ln);
+      const pu = new THREE.Sprite(new THREE.SpriteMaterial({ map: dot, color: accent, transparent: true, depthWrite: false })); pu.scale.set(.3, .3, 1); group.add(pu);
+      pulses.push({ pu, pos, t: Math.random(), v: .14 + Math.random() * .2 }); nodes.push(sp);
+      cardTex(LOGO[k]).then(tx => { if (tx) { sp.material.map = tx; sp.material.needsUpdate = true; sp.userData.born = performance.now() + i * 70; } });
+    });
+    function size() { const w = canvas.clientWidth, h = canvas.clientHeight; if (!w || !h) return; renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(w, h, false); camera.aspect = w / h; camera.position.set(0, 0, 13.6); camera.updateProjectionMatrix(); if (RED) draw(0); }
+    new ResizeObserver(size).observe(canvas);
+    const recolor = () => { accent = new THREE.Color(css("--accent")); halo.material.color = accent; halo.material.opacity = parseFloat(css("--halo-o")) || .5; lines.forEach(l => l.material.color = accent); pulses.forEach(p => p.pu.material.color = accent); drawHub(); if (RED) draw(0); };
+    new MutationObserver(recolor).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+    let mx = 0, my = 0, rx = 0, ry = 0, last = performance.now();
+    addEventListener("pointermove", e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
+    function draw(dt) {
+      group.rotation.y += dt * .08; rx += (my * .35 - rx) * .05; ry += (mx * .5 - ry) * .05; group.rotation.x = rx; group.rotation.z = ry * .15;
+      const now = performance.now(); nodes.forEach(s => { const b = s.userData.born; if (b) s.material.opacity = Math.min(Math.max((now - b) / 700, 0), 1); });
+      pulses.forEach(p => { p.t = (p.t + dt * p.v) % 1; p.pu.position.copy(p.pos).multiplyScalar(p.t); p.pu.material.opacity = Math.sin(Math.PI * p.t) * .95; });
+      renderer.render(scene, camera);
+    }
+    let visible = true; new IntersectionObserver(([e]) => visible = e.isIntersecting).observe(canvas);
+    size();
+    if (RED) { nodes.forEach(s => s.userData.born = 1); setTimeout(() => draw(0), 400); return; }
+    (function loop(t) { requestAnimationFrame(loop); const dt = Math.min((t - last) / 1000, .05); last = t; if (visible) draw(dt); })(performance.now());
+  }
+
+  function pick() {
+    const all = ["flow", "graph", "orbit", "wall", "map"], q = new URLSearchParams(location.search).get("hero");
+    if (all.includes(q)) return q;
+    let last = null; try { last = localStorage.getItem("hero-main"); } catch (e) {}
+    const pool = all.filter(m => m !== last), m = pool[Math.floor(Math.random() * pool.length)];
+    try { localStorage.setItem("hero-main", m); } catch (e) {}
+    return m;
+  }
+  const mode = pick();
+  if (mode === "flow" || !hv) return;                       // the original diagram stays as it is
+  flow.classList.add("hv-on"); hv.hidden = false;
+  VIEWS[mode](hv, () => { hv.innerHTML = ""; VIEWS.orbit(hv); });
 })();
 </script>
 </body>
