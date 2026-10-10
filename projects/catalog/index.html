@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Live catalog sync: case study · Muhammad Umar</title>
-<meta name="description" content="Makes sure the public website always shows exactly the apps and actions the platform supports, by syncing it daily from the internal database.">
+<meta name="description" content="The company's MySQL database is the source of truth for every app and action the platform supports. A daily automation syncs it to the company website, built on Webflow, so the public catalog always matches.">
 <link rel="canonical" href="https://umar8092.github.io/projects/catalog/">
 <link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://umar8092.github.io/projects/catalog/">
 <meta property="og:title" content="Live catalog sync: case study · Muhammad Umar">
-<meta property="og:description" content="Keeps the public app catalog matched to the internal source of truth, every day.">
+<meta property="og:description" content="Keeps the company's Webflow website catalog matched to its MySQL database, every day.">
 <meta property="og:image" content="https://umar8092.github.io/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"Live catalog sync","description":"Makes sure the public website always shows exactly the apps and actions the platform supports, by syncing it daily from the internal database.","url":"https://umar8092.github.io/projects/catalog/","image":"https://umar8092.github.io/og-image.png","dateModified":"2026-10-07","author":{"@type":"Person","name":"Muhammad Umar","url":"https://umar8092.github.io/"},"keywords":"Automation, MySQL, Scheduled job"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muhammad Umar","item":"https://umar8092.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://umar8092.github.io/projects/"},{"@type":"ListItem","position":3,"name":"Live catalog sync","item":"https://umar8092.github.io/projects/catalog/"}]}]</script>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"Live catalog sync","description":"The company's MySQL database is the source of truth for every app and action the platform supports. A daily automation syncs it to the company website, built on Webflow, so the public catalog always matches.","url":"https://umar8092.github.io/projects/catalog/","image":"https://umar8092.github.io/og-image.png","dateModified":"2026-10-10","author":{"@type":"Person","name":"Muhammad Umar","url":"https://umar8092.github.io/"},"keywords":"MySQL, Webflow, Scheduled job"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muhammad Umar","item":"https://umar8092.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://umar8092.github.io/projects/"},{"@type":"ListItem","position":3,"name":"Live catalog sync","item":"https://umar8092.github.io/projects/catalog/"}]}]</script>
 <style>
 @font-face{font-family:"Bricolage Grotesque";font-weight:700;font-display:swap;src:url(/assets/fonts/f-4efd1a5a.woff2) format("woff2")}
 @font-face{font-family:"Instrument Sans";font-weight:400 600;font-display:swap;src:url(/assets/fonts/f-e190a634.woff2) format("woff2")}
@@ -44,15 +44,15 @@ ol,ul{padding-left:1.3rem}li{margin:.35rem 0}
 <nav class="crumb" aria-label="Breadcrumb"><a href="/">Muhammad Umar</a> / <a href="/projects/">Case studies</a></nav>
 <p class="where">Integry · Internal automation · Built on Zapier</p>
 <h1>Live catalog sync</h1>
-<p class="lead">Makes sure the public website always shows exactly the apps and actions the platform supports, by syncing it daily from the internal database.</p>
+<p class="lead">The company's MySQL database is the source of truth for every app and action the platform supports. A daily automation syncs it to the company website, built on Webflow, so the public catalog always matches.</p>
 
 <h2>How it works</h2>
-<ol><li><strong>Schedule</strong>: Daily run</li><li><strong>Source of truth</strong>: Internal database (apps and activities)</li><li><strong>Compare</strong>: Catalog sync (finds what changed)</li><li><strong>Publish</strong>: Public site catalog (always current)</li></ol>
+<ol><li><strong>Schedule</strong>: Daily run (runs automatically every day)</li><li><strong>Source of truth</strong>: MySQL database (all apps and their activities)</li><li><strong>Compare</strong>: Catalog sync (finds what changed)</li><li><strong>Publish</strong>: Webflow website (public catalog always current)</li></ol>
 
 <h2>What I built</h2>
-<ul><li>Daily automation reading apps and activities from the internal database</li><li>Updates the public site catalog so it reflects the current source of truth</li></ul>
+<ul><li>Daily automation reads every app and activity from the company's MySQL database</li><li>Updates the catalog on the company's Webflow website so both always match</li><li>Keeps the public site in step with the source of truth, with no manual edits</li></ul>
 <h2>Stack</h2>
-<ul class="tags"><li>Automation</li><li>MySQL</li><li>Scheduled job</li></ul>
+<ul class="tags"><li>MySQL</li><li>Webflow</li><li>Scheduled job</li></ul>
 <div class="cta">
 <h2 style="margin-top:0">Need something like this?</h2>
 <p>I'm Muhammad Umar, a senior integration and AI automation engineer with 300+ integrations shipped. Tell me what you want to connect or automate.</p>

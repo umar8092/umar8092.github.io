@@ -27,7 +27,7 @@ Zapier, n8n, Make, Integry, Squig, GoHighLevel. CRMs include Salesforce, HubSpot
 - [Enrichment-to-outreach agent](https://umar8092.github.io/projects/outreach/): Sources, qualifies and writes to leads, then loads them straight into email sequences.
 - [Multi-directional accounting sync](https://umar8092.github.io/projects/accounting/): Keeps contacts, invoices, taxes and items identical across MYOB, Xero, QuickBooks and a SaaS product.
 - [Email template export](https://umar8092.github.io/projects/templates/): Lets users of an email-design product send their templates straight to their email provider.
-- [Lead ads to webinar registration](https://umar8092.github.io/projects/webinar/): Registers LinkedIn and Meta lead-ad submissions as webinar attendees in real time.
+- [Lead ads to webinar registration](https://umar8092.github.io/projects/webinar/): Registers LinkedIn and Meta lead-form submissions as Livestorm webinar attendees in real time.
 - [Microsoft, Google and Meta app verification](https://umar8092.github.io/projects/approvals/): Hands-on with each platform's developer side, taking connectors through verification and review.
-- [Daily shipped-work digest](https://umar8092.github.io/projects/digest/): Joins a day's commits to their tickets and posts one summary to Slack.
-- [Live catalog sync](https://umar8092.github.io/projects/catalog/): Keeps the public app catalog matched to the internal source of truth, every day.
+- [Daily shipped-work digest](https://umar8092.github.io/projects/digest/): Posts a daily Slack summary of every GitHub and Bitbucket commit from the last 24 hours.
+- [Live catalog sync](https://umar8092.github.io/projects/catalog/): Keeps the company's Webflow website catalog matched to its MySQL database, every day.

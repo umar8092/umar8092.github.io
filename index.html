@@ -800,16 +800,16 @@ const PROJECTS = [
 
   { id:"webinar", on:["n8n"], group:"integrations", where:"Integry · Integration",
     title:"Lead ads to webinar registration",
-    card:"Registers LinkedIn and Meta lead-ad submissions as webinar attendees in real time.",
-    summary:"When someone fills in a LinkedIn or Meta lead ad, they're registered for the webinar right away, with no CSV exports and no delay.",
+    card:"Registers LinkedIn and Meta lead-form submissions as Livestorm webinar attendees in real time.",
+    summary:"When someone fills in a LinkedIn or Meta lead form, they're registered for the Livestorm webinar right away, with no CSV exports and no delay.",
     flow:[
-      {label:"Lead ads", nodes:[["LinkedIn Lead Gen Form",""],["Meta Lead Ads",""]]},
+      {label:"Lead forms", nodes:[["LinkedIn Lead Gen Form","lead fills in the form on LinkedIn"],["Meta Lead Ads","lead fills in the form on Meta"]]},
       {label:"Capture", nodes:[["Real-time capture","each submission as it arrives","core"]]},
-      {label:"Map", nodes:[["Field mapping","form answers to attendee fields"]]},
-      {label:"Register", nodes:[["Webinar platform","lead added as attendee","end"]]}
+      {label:"Map", nodes:[["Field mapping","form answers to Livestorm attendee fields"]]},
+      {label:"Register", nodes:[["Livestorm","lead added as webinar attendee","end"]]}
     ],
-    built:["Real-time capture of LinkedIn Lead Gen Form and Meta Lead Ads submissions","Mapping of form fields to the webinar platform's attendee fields","Automatic attendee registration in the customer's webinar platform"],
-    tags:["LinkedIn","Meta","Real-time","Webinars"] },
+    built:["Real-time capture of LinkedIn Lead Gen Form and Meta Lead Ads submissions","Mapping of form fields to Livestorm's attendee fields","Automatic attendee registration in the customer's Livestorm webinar"],
+    tags:["LinkedIn","Meta","Livestorm","Real-time"] },
 
   { id:"approvals", on:["squig"], group:"integrations", where:"Integry · Developer platforms",
     title:"Microsoft, Google and Meta app verification",
@@ -825,29 +825,29 @@ const PROJECTS = [
 
   { id:"digest", on:["integry"], group:"integrations", where:"Integry · Internal automation",
     title:"Daily shipped-work digest",
-    card:"Joins a day's commits to their tickets and posts one summary to Slack.",
-    summary:"Replaced manual daily ship-tracking with one automated message: what shipped in the last 24 hours, tied to the tickets it was for.",
+    card:"Posts a daily Slack summary of every GitHub and Bitbucket commit from the last 24 hours.",
+    summary:"Every day, all the commits made to GitHub and Bitbucket in the last 24 hours are collected and posted as one summary on Slack, so the team sees what shipped without anyone tracking it by hand.",
     flow:[
-      {label:"Schedule", nodes:[["Daily run",""]]},
-      {label:"Last 24 hours", nodes:[["GitHub commits",""],["Bitbucket commits",""]]},
+      {label:"Schedule", nodes:[["Daily run","runs automatically every day"]]},
+      {label:"Last 24 hours", nodes:[["GitHub commits","everything pushed in the last 24 hours"],["Bitbucket commits","everything pushed in the last 24 hours"]]},
       {label:"Join", nodes:[["Linked ClickUp tickets","each commit matched to its ticket","core"]]},
-      {label:"Post", nodes:[["Slack","consolidated shipped-work digest","end"]]}
+      {label:"Post", nodes:[["Slack","one consolidated summary of the day's work","end"]]}
     ],
-    built:["Aggregates the last 24 hours of commits from GitHub and Bitbucket","Joins each commit to its linked ClickUp ticket","Posts a single consolidated digest to Slack every day"],
+    built:["Collects every commit from the last 24 hours across GitHub and Bitbucket","Joins each commit to its linked ClickUp ticket","Posts a single consolidated summary to Slack every day"],
     tags:["GitHub","Bitbucket","ClickUp","Slack"] },
 
   { id:"catalog", on:["zapier"], group:"integrations", where:"Integry · Internal automation",
     title:"Live catalog sync",
-    card:"Keeps the public app catalog matched to the internal source of truth, every day.",
-    summary:"Makes sure the public website always shows exactly the apps and actions the platform supports, by syncing it daily from the internal database.",
+    card:"Keeps the company's Webflow website catalog matched to its MySQL database, every day.",
+    summary:"The company's MySQL database is the source of truth for every app and action the platform supports. A daily automation syncs it to the company website, built on Webflow, so the public catalog always matches.",
     flow:[
-      {label:"Schedule", nodes:[["Daily run",""]]},
-      {label:"Source of truth", nodes:[["Internal database","apps and activities"]]},
+      {label:"Schedule", nodes:[["Daily run","runs automatically every day"]]},
+      {label:"Source of truth", nodes:[["MySQL database","all apps and their activities"]]},
       {label:"Compare", nodes:[["Catalog sync","finds what changed","core"]]},
-      {label:"Publish", nodes:[["Public site catalog","always current","end"]]}
+      {label:"Publish", nodes:[["Webflow website","public catalog always current","end"]]}
     ],
-    built:["Daily automation reading apps and activities from the internal database","Updates the public site catalog so it reflects the current source of truth"],
-    tags:["Automation","MySQL","Scheduled job"] }
+    built:["Daily automation reads every app and activity from the company's MySQL database","Updates the catalog on the company's Webflow website so both always match","Keeps the public site in step with the source of truth, with no manual edits"],
+    tags:["MySQL","Webflow","Scheduled job"] }
 ];
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
